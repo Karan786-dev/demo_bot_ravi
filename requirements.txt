@@ -1,0 +1,3 @@
+pyTelegramBotApi
+pymongo
+dnspython
