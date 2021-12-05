@@ -322,6 +322,7 @@ def start(message):
         else:
             ip.insert_one({"ip":IPAddr,"User":user})
         update_user(user, 'refer', 1)
+        update_user(user, 'verify', 1)
     refer = user_data(user, 'refer')
     if refer == 0:
         update_user(user,"referby",refid)
