@@ -319,6 +319,8 @@ def start(message):
             if refid != 1:
                 update_user(int(refid), "Ban", "Ban")
             return
+        else:
+            ip.insert_one({"ip":IPAddr,"User":user})
         update_user(user, 'refer', 1)
     refer = user_data(user, 'refer')
     if refer == 0:
