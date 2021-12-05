@@ -316,13 +316,13 @@ def start(message):
         if findip != None:
             bot.send_message(user, "1 Device One Refer Allowed")
             update_user(int(user), "Ban", "Ban")
-            update_user(user, 'verify', 1)
             if refid != 1:
                 update_user(int(refid), "Ban", "Ban")
             return
         
         else:
             ip.insert_one({"ip":IPAddr,"User":user})
+    update_user(user, 'verify', 1)
     refer = user_data(user, 'refer')
     if refer == 0:
         update_user(user,"referby",refid)
