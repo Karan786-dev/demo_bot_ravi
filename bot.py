@@ -1,15 +1,15 @@
 import telebot
 import requests
 import pymongo
-
-url = "mongodb+srv://karan:karan@cluster0.hqujv.mongodb.net/myFirstDatabase?retryWrites=true&w=majority"
-token = '5013659698:AAE3x7xyolFE5jZWhpfxyTXfkN_XzonKnzI'
+import socket
+url = "mongodb+srv://bot_v2:bot_v2@cluster0.kzreu.mongodb.net/myFirstDatabase?retryWrites=true&w=majority"
+token = '5003428764:AAELg9YX4UUQU1KXsl5_Zpa4aYVIqanqjmw'
 admin = 1468386562
 client = pymongo.MongoClient(url)
 db = client['Demo']
 data = db['Demo2']
 #Channels Check
-channels = ["@Paytm_Looter_Official", "@New_TrxSites","@scripter_adda","@bholanthpaul","@SINGHBOTS","@techno_heist_official"]
+channels = ["@Paytm_Looter_Official"]
 def check2(user,cha):
     result = bot.get_chat_member(cha,user)
     if result.status == 'left':
@@ -18,16 +18,6 @@ def check2(user,cha):
         return 'pass'
 def check1(user):
     if check2(user,"@Paytm_Looter_Official") == "left":
-        return "left"
-    elif check2(user,"@New_TrxSites") == 'left':
-        return "left"
-    elif check2(user,"@bholanthpaul") == 'left':
-        return "left"
-    elif check2(user,"@scripter_adda") == 'left':
-        return "left"
-    elif check2(user,"@SINGHBOTS") == 'left':
-        return "left"
-    elif check2(user,"@techno_heist_official") == 'left':
         return "left"
     else:
         return "Done"
@@ -48,9 +38,9 @@ def update_bot(type, newdata):
 
 def add_user(user,hh):
     if hh == 'Ban':
-        user_data = {"User": user, "Balance": 0.0, "Wallet": "None", "Ban": "Ban", "w_amo": 0, "refer": 0}
+        user_data = {"User": user, "Balance": 0.0, "Wallet": "None", "Ban": "Ban", "w_amo": 0, "refer": 0,"referby": "None","verify":0}
     else:
-        user_data = {"User": user, "Balance": 0.0, "Wallet": "None", "Ban": "Unban", "w_amo": 0, "refer": 0}
+        user_data = {"User": user, "Balance": 0.0, "Wallet": "None", "Ban": "Unban", "w_amo": 0, "refer": 0,"referby": "None","verify":0}
     data.insert_one(user_data)
 
 
@@ -129,31 +119,12 @@ def with_2(id):
                          f"*New Withdrawl Request Procced\n\nUser : *[{id}](tg://user?id={id})*\n\nWallet : {wallet}\n\nAmount : {amo} {curr}*",
                          parse_mode="Markdown", disable_web_page_preview=True)
 
-
-@bot.message_handler(commands=['start'])
-def start(message):
-    user = message.chat.id
-    msg = message.text
-    username = message.from_user.username
-    if username == None:
-        update_user(int(user), "Ban", "Ban")
-        return
-    ban = user_data(user, 'Ban')
-    if ban == "Ban":
-        bot.send_message(message.chat.id, "*You Are Banned From Using This Bot*", parse_mode="Markdown")
-        return
-    user_data(user, "User")
-    try:
-        refid = message.text.split()[1]
-    except:
-        refid = 1
-    markup = telebot.types.InlineKeyboardMarkup()
-    markup.add(telebot.types.InlineKeyboardButton(text='Joined', callback_data=f'check_{refid}'))
-    msg_start = "*To Use This Bot Join All Our Channel\n "
-    for i in channels:
-        msg_start += f"\n➡️ {i}\n"
-    msg_start += "*"
-    bot.send_message(user, msg_start, parse_mode="Markdown", reply_markup=markup)
+def menu(id):
+    keyboard = telebot.types.ReplyKeyboardMarkup(True)
+    keyboard.row('Balance', 'Invite')
+    keyboard.row('Set Wallet', 'Withdraw', 'Status')
+    keyboard.row('Earn More')
+    bot.send_message(id, "*Welcome To Home*", parse_mode="Markdown", reply_markup=keyboard)
 
 
 def amow(message):
@@ -275,61 +246,84 @@ def query_handler(call):
     if ban == "Ban":
         bot.send_message(message.chat.id, "*You Are Banned From Using This Bot*", parse_mode="Markdown")
         return
-    if call.data.startswith('check_'):
-        check = check1(user)
-        if check != 'left':
-            bot.answer_callback_query(callback_query_id=call.id, text='Thanks You Joind Our Channels')
-            refer = user_data(user, 'refer')
-            if refer == 0:
-                oldus = get_bot('Totalu')
-                newus = oldus + 1
-                update_bot('Totalu', newus)
-                hh = call.data.split('_')[1]
-                if int(hh) == call.message.chat.id:
-                    bot.send_message(call.message.chat.id, "*You Cannot Refer Userself*", parse_mode="Markdown")
-                elif int(hh) == 1:
-                    keyboard = telebot.types.ReplyKeyboardMarkup(True)
-                    keyboard.row('Balance', 'Invite')
-                    keyboard.row('Set Wallet', 'Withdraw', 'Status')
-                    keyboard.row('Earn More')
-                    bot.send_message(call.message.chat.id, "*Welcome To Home*", parse_mode="Markdown",
-                                     reply_markup=keyboard)
-                else:
-                    p_refer = get_bot('P_refer')
-                    oldB = user_data(int(hh), "Balance")
-                    newB = float(oldB) + float(p_refer)
-                    update_user(int(hh), "Balance", float(newB))
-                    bot.send_message(int(hh),
-                                     f"[{user}](tg://user?id={user})* {float(p_refer)} {curr} Added To Your Balance*",
-                                     parse_mode="Markdown")
-            update_user(user, 'refer', 1)
-            bot.delete_message(call.message.chat.id, call.message.message_id)
-            keyboard = telebot.types.ReplyKeyboardMarkup(True)
-            keyboard.row('Balance', 'Invite')
-            keyboard.row('Set Wallet', 'Withdraw', 'Status')
-            keyboard.row('Earn More')
-            bot.send_message(call.message.chat.id, "*Welcome To Home*", parse_mode="Markdown", reply_markup=keyboard)
-        else:
-            hh = call.data.split('_')[1]
-            bot.delete_message(call.message.chat.id, call.message.message_id)
-            markup = telebot.types.InlineKeyboardMarkup()
-            markup.add(telebot.types.InlineKeyboardButton(text='Joined', callback_data=f'check_{hh}'))
-            msg_start = "*To Use This Bot Join All Our Channel \n"
-            for i in channels:
-                msg_start += f"\n➡️ {i}\n"
-            msg_start += "*"
-            bot.send_message(user, msg_start, parse_mode="Markdown", reply_markup=markup)
+    if call.data.startswith('check'):
+        subs(user)
+        bot.delete_message(call.message.chat.id, call.message.message_id)
     elif call.data.startswith('Agree'):
         with_2(user)
         bot.delete_message(call.message.chat.id, call.message.message_id)
+def refer(user):
+    curr = get_bot('curr')
+    refer = user_data(user, 'refer')
+    if refer == 0:
+        oldus = get_bot('Totalu')
+        newus = oldus + 1
+        update_bot('Totalu', newus)
+        hh = user_data(user,"referby")
+        if int(hh) == user:
+            bot.send_message(user, "*You Cannot Refer Userself*", parse_mode="Markdown")
+        elif int(hh) == 1:
+            return
+        else:
+            p_refer = get_bot('P_refer')
+            oldB = user_data(int(hh), "Balance")
+            newB = float(oldB) + float(p_refer)
+            update_user(int(hh), "Balance", float(newB))
+            bot.send_message(int(hh),f"[{user}](tg://user?id={user})* {float(p_refer)} {curr} Added To Your Balance*",parse_mode="Markdown")
+    update_user(user, 'refer', 1)
 
 
-def menu(id):
-    keyboard = telebot.types.ReplyKeyboardMarkup(True)
-    keyboard.row('Balance', 'Invite')
-    keyboard.row('Set Wallet', 'Withdraw', 'Status')
-    keyboard.row('Earn More')
-    bot.send_message(id, "*Welcome To Home*", parse_mode="Markdown", reply_markup=keyboard)
+def send_start(user):
+    markup = telebot.types.InlineKeyboardMarkup()
+    markup.add(telebot.types.InlineKeyboardButton(text='Joined', callback_data=f'check'))
+    msg_start = "*To Use This Bot Join All Our Channel \n"
+    for i in channels:
+        msg_start += f"\n➡️ {i}\n"
+    msg_start += "*"
+    bot.send_message(user, msg_start, parse_mode="Markdown", reply_markup=markup)
+def subs(user):
+    check = check1(user)
+    if check == 'left':
+        send_start(user)
+    else:
+        menu(user)
+        refer(user)
+
+@bot.message_handler(commands=['start'])
+def start(message):
+    user = message.chat.id
+    msg = message.text
+    username = message.from_user.username
+    if username == None:
+        update_user(int(user), "Ban", "Ban")
+        return
+    ban = user_data(user, 'Ban')
+    if ban == "Ban":
+        bot.send_message(message.chat.id, "*You Are Banned From Using This Bot*", parse_mode="Markdown")
+        return
+    user_data(user, "User")
+    try:
+        refid = message.text.split()[1]
+    except:
+        refid = 1
+    hostname = socket.gethostname()
+    IPAddr = socket.gethostbyname(hostname)
+    ip = db['IpAddress']
+    ip2 = {"ip": IPAddr}
+    findip = ip.find_one(ip2)
+    verify = user_data(user, 'verify')
+    if verify == 0:
+        if findip != None:
+            bot.send_message(user, "1 Device One Refer Allowed")
+            update_user(int(user), "Ban", "Ban")
+            if refid != 1:
+                update_user(int(refid), "Ban", "Ban")
+            return
+        update_user(user, 'refer', 1)
+    refer = user_data(user, 'refer')
+    if refer == 0:
+        update_user(user,"referby",refid)
+    subs(user)
 @bot.message_handler(content_types=['text'])
 def send_text(message):
     curr = get_bot('curr')
@@ -369,7 +363,7 @@ def send_text(message):
         elif wallet == "None":
             bot.send_message(id, "*Please Set Your Wallet First*", parse_mode="Markdown")
         else:
-            bot.send_message(id, "*Send Amount You Wallet To Withdraw*", parse_mode="Markdown")
+            bot.send_message(id, "*Send Amount You Want To Withdraw*", parse_mode="Markdown")
             bot.register_next_step_handler(message, amow)
     elif message.text == "Ban":
         if message.chat.id == admin:
