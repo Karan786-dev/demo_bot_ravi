@@ -262,7 +262,7 @@ def panel(message):
         text = "*Channels : "
         for Data in channels:
             for x in Data.values():
-                text += f"{x}"
+                text += f"{x}\n"
         text += f"\nPer Refer : {per_refer} {curr}\nMinimun Withdraw : {m_with} {curr}\nPayment Channel : {pay_c}"
         text += "*"
 
