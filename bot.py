@@ -4,7 +4,7 @@ import requests
 import pymongo
 
 url = "mongodb+srv://bot_v2:bot_v2@cluster0.kzreu.mongodb.net/myFirstDatabase?retryWrites=true&w=majority"
-token = '5030428094:AAHRUaeFhDAYPRmMsbVWZxrwRVjuUcfJogE'
+token = '5011653572:AAH74boE6GAL7CQfdES-izeSDLFXfI1d59w'
 admin = 1468386562
 client = pymongo.MongoClient(url)
 db = client['Demo']
@@ -86,17 +86,20 @@ def get_bot(type):
 
 
 per_refer = get_bot('P_refer')
-earn_more = '''*🎁New Paytm Earning App Lauched
+earn_more = '''*
+🎁Earn Easy App 2 Payments Received
 
-🏆Sign Up Bonus : 100Coins(2 Rs)
+Sign Up Bonus ÷ 10 Rs
 
-💰Per Refer Upto : 500 Coins(10 Rs)
+🔥Per Refer ÷ 10 Rs
 
-🎖️ Minimum Withdraw : 2500 Coins (50 Rs)
+😍 Minimum Withdraw 50 Rs
 
-🚏App Link ÷ https://oto.flyy.in/8GO1QP6
+👍Refer Code ÷ *`KGU7p6ml`*
 
-✅ Payment Verified By Me*'''
+💰App Link ÷ https://play.google.com/store/apps/details?id=com.earneasy.app
+
+⚠️Use Refer Code Else Minimum Withdraw 200 Hujayega And Sign Up Bonus Vi Nhi Milega*'''
 bot = telebot.TeleBot(token)
 
 
