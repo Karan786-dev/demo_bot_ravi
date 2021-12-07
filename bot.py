@@ -283,8 +283,8 @@ def send_start(user):
     msg_start = "*⛔Must Join All Our Channel\n"
     for Data in channels:
         for x in Data.values():
-            msg_start += f"\n➡️ {x}\n"
-    msg_start += "✅After Joining, Click On '🟢Joined'"
+            msg_start += f"\n {x}\n"
+    msg_start += "\n✅After Joining, Click On '🟢Joined'"
     msg_start += "*"
     bot.send_message(user, msg_start, parse_mode="Markdown", reply_markup=markup)
 def subs(user):
