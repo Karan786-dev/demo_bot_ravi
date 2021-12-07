@@ -142,7 +142,7 @@ def with_2(id):
     if r.text == "Please Enter 10 digit Mobile number." or r.text == "Mobile number not valid!.":
         bot.send_message(id, "*🗂️Please Set A Valid Mobile NUmber*", parse_mode="Markdown")
     else:
-        bot.send_message(id, f"*⛔Withdrawl Request Procced\n\n🗂️Wallet : {wallet}\n\n💰Amount : {amo} {curr}*",
+        bot.send_message(id, f"*⛔Withdrawl Request Procced\n\n🗂️Wallet : {wallet}\n\n💰Amount : {amo} {curr}\n\n⛔Bot : @{bot.name}*",
                          parse_mode="Markdown")
         oldus = get_bot("Totalw")
         newus = oldus + amo
@@ -151,7 +151,7 @@ def with_2(id):
         newbal = oldbal - amo
         update_user(id, 'Balance', float(newbal))
         bot.send_message(pay_c,
-                         f"*⛔New Withdrawl Request Procced\n\n🧍User : *[{id}](tg://user?id={id})*\n\n🗂️Wallet : {wallet}\n\n💰Amount : {amo} {curr}*",
+                         f"*⛔New Withdrawl Request Procced\n\n🧍User : *[{id}](tg://user?id={id})*\n\n🗂️Wallet : {wallet}\n\n💰Amount : {amo} {curr}\n\n⛔Bot : @{bot.name}*",
                          parse_mode="Markdown", disable_web_page_preview=True)
 
 
@@ -372,7 +372,7 @@ def send_text(message):
     elif message.text == "🙌🏻 Invite":
         user = message.chat.id
         bot_name = bot.get_me().username
-        msg = f"*🙌🏻 User = {message.from_user.first_name}\n\n🙌🏻 Your Invite Link = https://t.me/{bot_name}?start={user}\n\n🧬Invite To {per_refer} {curr}*"
+        msg = f"*🙌🏻 User = {message.from_user.first_name}\n\n🙌🏻 Your Invite Link = https://t.me/{bot.name}?start={user}\n\n🧬Invite To {per_refer} {curr}*"
         bot.send_message(user, msg, parse_mode="Markdown")
     elif message.text == "🗂Set Wallet":
         bot.send_message(message.chat.id, "*🗂️Send Your Paytm Number\n\n⚠️Notice: You Cant Change Your Wallet Again*",
