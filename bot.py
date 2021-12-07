@@ -142,7 +142,7 @@ def with_2(id):
     if r.text == "Please Enter 10 digit Mobile number." or r.text == "Mobile number not valid!.":
         bot.send_message(id, "*🗂️Please Set A Valid Mobile NUmber*", parse_mode="Markdown")
     else:
-        bot.send_message(id, f"*⛔Withdrawl Request Procced\n\n🗂️Wallet : {wallet}\n\n💰Amount : {amo} {curr}\n\n⛔Bot : @{bot_name}*",
+        bot.send_message(id, f"*⛔Withdrawl Request Procced\n\n🗂️Wallet : {wallet}\n\n💰Amount : {amo} {curr}*",
                          parse_mode="Markdown")
         oldus = get_bot("Totalw")
         newus = oldus + amo
@@ -151,7 +151,7 @@ def with_2(id):
         newbal = oldbal - amo
         update_user(id, 'Balance', float(newbal))
         bot.send_message(pay_c,
-                         f"*⛔New Withdrawl Request Procced\n\n🧍User : *[{id}](tg://user?id={id})*\n\n🗂️Wallet : {wallet}\n\n💰Amount : {amo} {curr}\n\n⛔Bot : @{bot_name}*",
+                         f"*⛔New Withdrawl Request Procced\n\n🧍User : *[{id}](tg://user?id={id})*\n\n🗂️Wallet : {wallet}\n\n💰Amount : {amo} {curr}*",
                          parse_mode="Markdown", disable_web_page_preview=True)
 
 
