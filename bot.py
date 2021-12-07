@@ -251,13 +251,28 @@ def add(message):
 @bot.message_handler(commands=['panel'])
 def panel(message):
     if message.chat.id == admin:
+        pay_c = get_bot('P_channel')
+        curr = get_bot('curr')
+        m_with = get_bot('M_with')
+        per_refer = get_bot('P_refer')
+        channels = cha.find({}, {"Channel": 1, "_id": 0})
+        if channels == None:
+            bot.send_message(admin, "*Please Add Some Channels In Bot*", parse_mode="Markdown")
+            return
+        text = "*Channels : "
+        for Data in channels:
+            for x in Data.values():
+                text += f"\n{x}\n"
+        text += f"Per Refer : {per_refer} {curr}\nMinimun Withdraw : {m_with} {curr}\nPayment Channel : {pay_c}"
+        text += "*"
+
         keyboard = telebot.types.ReplyKeyboardMarkup(True)
         keyboard.row('Ban', 'Unban', 'Broadcast')
         keyboard.row('Add Channel', 'Delete Channel')
         keyboard.row('Set Currency')
         keyboard.row('Per Refer', 'Minimum Withdraw', 'Pay Channel')
         keyboard.row('Back')
-        bot.send_message(admin, "*Welcome Admin To Admin Panel*", parse_mode="Markdown", reply_markup=keyboard)
+        bot.send_message(admin,text, parse_mode="Markdown", reply_markup=keyboard)
 
 
 def refer(user):
