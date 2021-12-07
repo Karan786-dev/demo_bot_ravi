@@ -362,6 +362,7 @@ def send_text(message):
         return
     elif msg == "🟢Joined":
         subs(user)
+        bot.delete_message(message.chat.id,message.message_id)
         bot.delete_message(message.chat.id,message.message_id-1)
     elif message.text == "💰 Balance":
         balance = user_data(user, 'Balance')
