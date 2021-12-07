@@ -3,7 +3,7 @@ from telebot import types
 import requests
 import pymongo
 url = "mongodb+srv://bot_v2:bot_v2@cluster0.kzreu.mongodb.net/myFirstDatabase?retryWrites=true&w=majority"
-token = '5062697082:AAG7MdH253pSoSQrcWMaguqQRUcFlykIRX8'
+token = '5030428094:AAHRUaeFhDAYPRmMsbVWZxrwRVjuUcfJogE'
 admin = 1468386562
 client = pymongo.MongoClient(url)
 db = client['Demo']
