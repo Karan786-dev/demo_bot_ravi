@@ -375,7 +375,7 @@ def send_text(message):
         msg = f"*🙌🏻 User = {message.from_user.first_name}\n\n🙌🏻 Your Invite Link = https://t.me/{bot_name}?start={user}\n\n🧬Invite To {per_refer} {curr}*"
         bot.send_message(user, msg, parse_mode="Markdown")
     elif message.text == "🗂Set Wallet":
-        bot.send_message(message.chat.id, "*📂Send Your Paytm Number\n\nNotice: You Cant Change Your Wallet Again*",
+        bot.send_message(message.chat.id, "*🗂️Send Your Paytm Number\n\n⚠️Notice: You Cant Change Your Wallet Again*",
                          parse_mode="Markdown")
         bot.register_next_step_handler(message, setnum)
     elif message.text == "📊 Statistics":
