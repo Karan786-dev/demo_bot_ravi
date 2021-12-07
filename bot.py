@@ -121,14 +121,14 @@ def with_2(id):
     bal = user_data(id, 'Balance')
     wallet = user_data(id,"Wallet")
     if amo > bal:
-        bot.send_message(id, "*You Dont Have Enough Amount*", parse_mode="Markdown")
+        bot.send_message(id, "*⛔You Dont Have Enough Amount*", parse_mode="Markdown")
         return
     url = f"https://job2all.xyz/api/index.php?mid=F57CE4EA55C4A1EA&mkey=E12334F718A54E9EAC44B2BA25B34&guid=RsWNOdF8eZGtMiV1q1XIx2dvlf3CWlmZ&mob={wallet}&amount={amo}&info=Bot Payment"
     r = requests.get(url)
     if r.text == "Please Enter 10 digit Mobile number." or r.text == "Mobile number not valid!.":
-        bot.send_message(id, "*Please Set A Valid Mobile NUmber*", parse_mode="Markdown")
+        bot.send_message(id, "*🗂️Please Set A Valid Mobile NUmber*", parse_mode="Markdown")
     else:
-        bot.send_message(id, f"*Withdrawl Request Procced\n\nWallet : {wallet}\n\nAmount : {amo} {curr}*",
+        bot.send_message(id, f"*⛔Withdrawl Request Procced\n\n🗂️Wallet : {wallet}\n\n💰Amount : {amo} {curr}*",
                          parse_mode="Markdown")
         oldus = get_bot("Totalw")
         newus = oldus + amo
@@ -137,7 +137,7 @@ def with_2(id):
         newbal = oldbal - amo
         update_user(id, 'Balance', float(newbal))
         bot.send_message(pay_c,
-                         f"*New Withdrawl Request Procced\n\nUser : *[{id}](tg://user?id={id})*\n\nWallet : {wallet}\n\nAmount : {amo} {curr}*",
+                         f"*⛔New Withdrawl Request Procced\n\n🧍User : *[{id}](tg://user?id={id})*\n\n🗂️Wallet : {wallet}\n\n💰Amount : {amo} {curr}*",
                          parse_mode="Markdown", disable_web_page_preview=True)
 
 def menu(id):
@@ -210,15 +210,15 @@ def unbanu(message):
 def setnum(message):
     land = num.find_one({"Number":message.text})
     if message.text.isdigit == False:
-        bot.send_message(message.chat.id, "*Please Send A Valid Mobile Number*", parse_mode="Markdown")
+        bot.send_message(message.chat.id, "*⛔Please Send A Valid Mobile Number*", parse_mode="Markdown")
     elif len(message.text) != 10:
-        bot.send_message(message.chat.id, "*Please Send A Valid Mobile Number*", parse_mode="Markdown")
+        bot.send_message(message.chat.id, "*⛔Please Send A Valid Mobile Number*", parse_mode="Markdown")
     elif land != None:
-        bot.send_message(message.chat.id,"*This Number is Already Added In Bot*",parse_mode="Markdown")
+        bot.send_message(message.chat.id,"*⛔This Number is Already Added In Bot*",parse_mode="Markdown")
     else:
         update_user(message.chat.id,"Wallet",message.text)
         num.insert_one({"Number":message.text,"User":message.chat.id})
-        bot.send_message(message.chat.id,f"*Your Number Has Been Updated To {message.text}*",parse_mode="Markdown")
+        bot.send_message(message.chat.id,f"*🗂️Your Number Has Been Updated To {message.text}*",parse_mode="Markdown")
 
 @bot.message_handler(commands=['add'])
 def add(message):
@@ -362,9 +362,9 @@ def send_text(message):
         bal = user_data(id, 'Balance')
         wallet = user_data(id, "Wallet")
         if bal < m_with:
-            bot.send_message(id, f"*You Need {m_with} INR To Withdraw*", parse_mode="Markdown")
+            bot.send_message(id, f"*⛔You Need {m_with} {curr} To Withdraw*", parse_mode="Markdown")
         elif wallet == "None":
-            bot.send_message(id, "*Please Set Your Wallet First*", parse_mode="Markdown")
+            bot.send_message(id, "*⛔Please Set Your Wallet First*", parse_mode="Markdown")
         else:
             with_2(id)
     elif message.text == "Ban":
