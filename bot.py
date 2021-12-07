@@ -305,7 +305,7 @@ def send_start(user):
         return
     keyboard = telebot.types.ReplyKeyboardMarkup(True)
     keyboard.row('🟢Joined')
-    msg_start = "*⛔Must Join All Our Channel\n"
+    msg_start = "*⛔Must Join All Our Channel\n\n"
     for Data in channels:
         for x in Data.values():
             msg_start += f"{x}\n"
