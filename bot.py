@@ -338,26 +338,26 @@ def send_text(message):
     if ban == "Ban":
         bot.send_message(message.chat.id, "*You Are Banned From Using This Bot*", parse_mode="Markdown")
         return
-    elif message.text == "Balance":
+    elif message.text == "💰 Balance":
         balance = user_data(user, 'Balance')
         wallet = user_data(user, 'Wallet')
         msg = f'*User : {message.from_user.first_name}\n\nBalance : {balance} {curr}\n\nYour Wallet : *`{wallet}`'
         bot.send_message(message.chat.id, msg, parse_mode="Markdown")
-    elif message.text == "Invite":
+    elif message.text == "🙌🏻 Invite":
         user = message.chat.id
         bot_name = bot.get_me().username
         msg = f"*Welcome To Refer And Earn Section\n\nYour Refer Link : https://t.me/{bot_name}?start={user}\n\nPer Refer : {per_refer} {curr}*"
         bot.send_message(user, msg, parse_mode="Markdown")
-    elif message.text == "Set Wallet":
-        bot.send_message(message.chat.id, "*Send Your Paytm Number\n\nNotice: You Cant Change Your Wallet Again*", parse_mode="Markdown")
+    elif message.text == "🗂Set Wallet":
+        bot.send_message(message.chat.id, "*📂Send Your Paytm Number\n\nNotice: You Cant Change Your Wallet Again*", parse_mode="Markdown")
         bot.register_next_step_handler(message, setnum)
-    elif message.text == "Status":
+    elif message.text == "📊 Statistics":
         id = message.chat.id
         witth = get_bot('Totalw')
         total = get_bot('Totalu')
         msg = f"*Total Users : {total}\n\nTotal Paid : {witth} {curr}\n\nBot Coded By *[KaranYT](https://t.me/KaranYTop)"
         bot.send_message(id, msg, parse_mode="Markdown", disable_web_page_preview=True)
-    elif message.text == "Withdraw":
+    elif message.text == "💳 Withdraw":
         id = message.chat.id
         bal = user_data(id, 'Balance')
         wallet = user_data(id, "Wallet")
