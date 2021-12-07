@@ -1,28 +1,33 @@
 import telebot
 import requests
 import pymongo
-import socket
 url = "mongodb+srv://bot_v2:bot_v2@cluster0.kzreu.mongodb.net/myFirstDatabase?retryWrites=true&w=majority"
-token = '5003428764:AAELg9YX4UUQU1KXsl5_Zpa4aYVIqanqjmw'
+token = '5062697082:AAG7MdH253pSoSQrcWMaguqQRUcFlykIRX8'
 admin = 1468386562
 client = pymongo.MongoClient(url)
 db = client['Demo']
 data = db['Demo2']
+cha = db['channels']
+num = db['numbers']
 #Channels Check
-channels = ["@Paytm_Looter_Official"]
-def check2(user,cha):
-    result = bot.get_chat_member(cha,user)
-    if result.status == 'left':
-        return 'left'
-    else:
-        return 'pass'
+def delete_cha2(username):
+    cha.delete_one({"Channel":username})
+def add_cha2(username):
+    cha.insert_one({"Channel":username})
+
 def check1(user):
-    if check2(user,"@Paytm_Looter_Official") == "left":
-        return "left"
-    else:
-        return "Done"
+    channels = cha.find({}, {"Channel": 1, "_id": 0})
+    if channels == None:
+        bot.send_message(admin,"*Please Add Some Channels In Bot*",parse_mode="Markdown")
+        return "Not_added"
+    for Data in channels:
+        for x in Data.values():
+            result = bot.get_chat_member(x, user).status
+            if 'left' in result:
+                return 'Left'
 
 # Pymongo Database Function
+
 def update_user(user, type, newdata):
     user_db = data.find_one({"User": user})
     if user_db == None:
@@ -38,9 +43,9 @@ def update_bot(type, newdata):
 
 def add_user(user,hh):
     if hh == 'Ban':
-        user_data = {"User": user, "Balance": 0.0, "Wallet": "None", "Ban": "Ban", "w_amo": 0, "refer": 0,"referby": "None","verify":0}
+        user_data = {"User": user, "Balance": 0.0, "Wallet":"None", "Ban": "Ban", "w_amo": 0, "refer": 0,"referby": "None"}
     else:
-        user_data = {"User": user, "Balance": 0.0, "Wallet": "None", "Ban": "Unban", "w_amo": 0, "refer": 0,"referby": "None","verify":0}
+        user_data = {"User": user, "Balance": 0.0, "Wallet":"None", "Ban": "Unban", "w_amo": 0, "refer": 0,"referby": "None"}
     data.insert_one(user_data)
 
 
@@ -91,14 +96,29 @@ def broad(message):
         for Data in all_user:
             for x in Data.values():
                 bot.send_message(x, f"*Broadcast By Admin*\n\n{message.text}", parse_mode="Markdown")
+def add_cha(message):
+    msg = message.text
+    user = message.chat.id
+    if "@" == msg:
+        bot.send_message(user,"*its Not A Valid Channel Username*",parse_mode="Markdown")
+        return
+    bot.send_message(user, "*Channel Has Been Added Make Sure You Make Bot Admin In Channel*", parse_mode="Markdown")
+    add_cha2(msg)
 
-
+def delete_cha(message):
+    msg = message.text
+    user = message.chat.id
+    if "@" == msg:
+        bot.send_message(user,"*its Not A Valid Channel Username*",parse_mode="Markdown")
+        return
+    bot.send_message(user,"*channel Has been Deleted*",parse_mode="Markdown")
+    delete_cha2(msg)
 def with_2(id):
     pay_c = get_bot('P_channel')
     curr = get_bot('curr')
-    amo = user_data(id, 'w_amo')
+    amo = get_bot('M_with')
     bal = user_data(id, 'Balance')
-    wallet = user_data(id, 'Wallet')
+    wallet = user_data(id,"Wallet")
     if amo > bal:
         bot.send_message(id, "*You Dont Have Enough Amount*", parse_mode="Markdown")
         return
@@ -125,28 +145,6 @@ def menu(id):
     keyboard.row('Set Wallet', 'Withdraw', 'Status')
     keyboard.row('Earn More')
     bot.send_message(id, "*Welcome To Home*", parse_mode="Markdown", reply_markup=keyboard)
-
-
-def amow(message):
-    curr = get_bot('curr')
-    m_with = get_bot('M_with')
-    id = message.chat.id
-    bal = user_data(id, 'Balance')
-    wallet = user_data(id, 'Wallet')
-    if message.text.isdigit() == False:
-        bot.send_message(id, "*Please Send A Valid Amount*", parse_mode="Markdown")
-    elif int(message.text) > bal:
-        bot.send_message(id, "*You Dont Have Enough Balance*", parse_mode="Markdown")
-    elif int(message.text) < m_with:
-        bot.send_message(id, f"*Minimun Withdraw Is {m_with} {curr}*", parse_mode="Markdown")
-    else:
-        amo = int(message.text)
-        update_user(id, 'w_amo', amo)
-        markup = telebot.types.InlineKeyboardMarkup()
-        markup.add(telebot.types.InlineKeyboardButton(text='Agree', callback_data='Agree'))
-        bot.send_message(id,
-                         f"*Withdraw Request Confirmation\n\nAmount : {message.text} {curr}\n\nWallet : {wallet}\n\nIf You Want To Continue Click On Agree*",
-                         parse_mode="Markdown", reply_markup=markup)
 
 
 def set_prefer(message):
@@ -209,14 +207,17 @@ def unbanu(message):
 
 
 def setnum(message):
+    land = num.find_one({"Number":message.text})
     if message.text.isdigit == False:
         bot.send_message(message.chat.id, "*Please Send A Valid Mobile Number*", parse_mode="Markdown")
     elif len(message.text) != 10:
         bot.send_message(message.chat.id, "*Please Send A Valid Mobile Number*", parse_mode="Markdown")
+    elif land != None:
+        bot.send_message(message.chat.id,"*This Number is Already Added In Bot*",parse_mode="Markdown")
     else:
-        update_user(message.chat.id, "Wallet", message.text)
-        bot.send_message(message.chat.id, f"*Your Wallet Has Been Set To {message.text}*", parse_mode="Markdown")
-
+        update_user(message.chat.id,"Wallet",message.text)
+        num.insert_one({"Number":message.text,"User":message.chat.id})
+        bot.send_message(message.chat.id,f"*Your Number Has Been Updated To {message.text}*",parse_mode="Markdown")
 
 @bot.message_handler(commands=['add'])
 def add(message):
@@ -232,6 +233,7 @@ def panel(message):
     if message.chat.id == admin:
         keyboard = telebot.types.ReplyKeyboardMarkup(True)
         keyboard.row('Ban', 'Unban', 'Broadcast')
+        keyboard.row('Add Channel','Delete Channel')
         keyboard.row('Set Currency')
         keyboard.row('Per Refer', 'Minimum Withdraw', 'Pay Channel')
         keyboard.row('Back')
@@ -244,13 +246,10 @@ def query_handler(call):
     curr = get_bot("curr")
     ban = user_data(user, 'Ban')
     if ban == "Ban":
-        bot.send_message(message.chat.id, "*You Are Banned From Using This Bot*", parse_mode="Markdown")
+        bot.send_message(user, "*You Are Banned From Using This Bot*", parse_mode="Markdown")
         return
     if call.data.startswith('check'):
         subs(user)
-        bot.delete_message(call.message.chat.id, call.message.message_id)
-    elif call.data.startswith('Agree'):
-        with_2(user)
         bot.delete_message(call.message.chat.id, call.message.message_id)
 def refer(user):
     curr = get_bot('curr')
@@ -274,16 +273,21 @@ def refer(user):
 
 
 def send_start(user):
+    channels = cha.find({}, {"Channel": 1, "_id": 0})
+    if channels == None:
+        bot.send_message(admin, "*Please Add Some Channels In Bot*", parse_mode="Markdown")
+        return
     markup = telebot.types.InlineKeyboardMarkup()
     markup.add(telebot.types.InlineKeyboardButton(text='Joined', callback_data=f'check'))
     msg_start = "*To Use This Bot Join All Our Channel \n"
-    for i in channels:
-        msg_start += f"\n➡️ {i}\n"
+    for Data in channels:
+        for x in Data.values():
+            msg_start += f"\n➡️ {x}\n"
     msg_start += "*"
     bot.send_message(user, msg_start, parse_mode="Markdown", reply_markup=markup)
 def subs(user):
     check = check1(user)
-    if check == 'left':
+    if check == 'Left':
         send_start(user)
     else:
         menu(user)
@@ -306,23 +310,6 @@ def start(message):
         refid = message.text.split()[1]
     except:
         refid = 1
-    hostname = socket.gethostname()
-    IPAddr = socket.gethostbyname(hostname)
-    ip = db['IpAddress']
-    ip2 = {"ip": IPAddr}
-    findip = ip.find_one(ip2)
-    verify = user_data(user, 'verify')
-    if verify == 0:
-        if findip != None:
-            bot.send_message(user, "1 Device One Refer Allowed")
-            update_user(int(user), "Ban", "Ban")
-            if refid != 1:
-                update_user(int(refid), "Ban", "Ban")
-            return
-        
-        else:
-            ip.insert_one({"ip":IPAddr,"User":user})
-    update_user(user, 'verify', 1)
     refer = user_data(user, 'refer')
     if refer == 0:
         update_user(user,"referby",refid)
@@ -334,6 +321,7 @@ def send_text(message):
     per_refer = get_bot('P_refer')
     user = message.chat.id
     msg = message.text
+    wallet = user_data(user,"Wallet")
     ban = user_data(user, 'Ban')
     if ban == "Ban":
         bot.send_message(message.chat.id, "*You Are Banned From Using This Bot*", parse_mode="Markdown")
@@ -349,7 +337,7 @@ def send_text(message):
         msg = f"*Welcome To Refer And Earn Section\n\nYour Refer Link : https://t.me/{bot_name}?start={user}\n\nPer Refer : {per_refer} {curr}*"
         bot.send_message(user, msg, parse_mode="Markdown")
     elif message.text == "Set Wallet":
-        bot.send_message(message.chat.id, "*Send Your Paytm Number*", parse_mode="Markdown")
+        bot.send_message(message.chat.id, "*Send Your Paytm Number\n\nNotice: You Cant Change Your Wallet Again*", parse_mode="Markdown")
         bot.register_next_step_handler(message, setnum)
     elif message.text == "Status":
         id = message.chat.id
@@ -366,8 +354,7 @@ def send_text(message):
         elif wallet == "None":
             bot.send_message(id, "*Please Set Your Wallet First*", parse_mode="Markdown")
         else:
-            bot.send_message(id, "*Send Amount You Want To Withdraw*", parse_mode="Markdown")
-            bot.register_next_step_handler(message, amow)
+            with_2(id)
     elif message.text == "Ban":
         if message.chat.id == admin:
             bot.send_message(message.chat.id, "*Send His Telegram Id*", parse_mode="Markdown")
@@ -405,6 +392,14 @@ def send_text(message):
         if message.chat.id == admin:
             bot.send_message(message.chat.id, "*Send Message You Want To Broadcast*", parse_mode="Markdown")
             bot.register_next_step_handler(message, broad)
+    elif message.text == "Add Channel":
+        if message.chat.id == admin:
+            bot.send_message(message.chat.id, "*Send Channel Username You Want To Add*", parse_mode="Markdown")
+            bot.register_next_step_handler(message,add_cha)
+    elif message.text == "Delete Channel":
+        if message.chat.id == admin:
+            bot.send_message(message.chat.id, "*Send Channel Username You Want To Delete*", parse_mode="Markdown")
+            bot.register_next_step_handler(message,delete_cha)
 
 
 print("Done")
