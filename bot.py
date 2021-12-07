@@ -145,7 +145,7 @@ def menu(id):
     keyboard.row('Balance', 'Invite')
     keyboard.row('Set Wallet', 'Withdraw', 'Status')
     keyboard.row('Earn More')
-    bot.send_message(id, "*🎁Welcome To Home*", parse_mode="Markdown", reply_markup=keyboard)
+    bot.send_message(id, "*🏡Welcome To Home*", parse_mode="Markdown", reply_markup=keyboard)
 
 
 def set_prefer(message):
