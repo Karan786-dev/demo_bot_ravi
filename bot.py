@@ -279,7 +279,7 @@ def send_start(user):
         bot.send_message(admin, "*Please Add Some Channels In Bot*", parse_mode="Markdown")
         return
     markup = telebot.types.InlineKeyboardMarkup()
-    markup.add(telebot.types.InlineKeyboardButton(text='Joined', callback_data=f'check'))
+    markup.add(telebot.types.InlineKeyboardButton(text="'🟢Joined'", callback_data=f'check'))
     msg_start = "*⛔Must Join All Our Channel\n"
     for Data in channels:
         for x in Data.values():
