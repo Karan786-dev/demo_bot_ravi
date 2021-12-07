@@ -259,7 +259,7 @@ def panel(message):
         if channels == None:
             bot.send_message(admin, "*Please Add Some Channels In Bot*", parse_mode="Markdown")
             return
-        text = "*Channels : "
+        text = "*Channels : \n"
         for Data in channels:
             for x in Data.values():
                 text += f"{x}\n"
@@ -308,7 +308,7 @@ def send_start(user):
     msg_start = "*⛔Must Join All Our Channel\n"
     for Data in channels:
         for x in Data.values():
-            msg_start += f"\n {x}\n"
+            msg_start += f"{x}\n"
     msg_start += "\n✅After Joining, Click On '🟢Joined'"
     msg_start += "*"
     bot.send_message(user, msg_start, parse_mode="Markdown", reply_markup=keyboard)
