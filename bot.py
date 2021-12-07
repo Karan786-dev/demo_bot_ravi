@@ -261,7 +261,7 @@ def refer(user):
         update_bot('Totalu', newus)
         hh = user_data(user,"referby")
         if int(hh) == user:
-            bot.send_message(user, "*You Cannot Refer Userself*", parse_mode="Markdown")
+            bot.send_message(user, "*🦹You Cannot Refer Userself*", parse_mode="Markdown")
         elif int(hh) == 1:
             return
         else:
@@ -269,7 +269,7 @@ def refer(user):
             oldB = user_data(int(hh), "Balance")
             newB = float(oldB) + float(p_refer)
             update_user(int(hh), "Balance", float(newB))
-            bot.send_message(int(hh),f"[{user}](tg://user?id={user})* {float(p_refer)} {curr} Added To Your Balance*",parse_mode="Markdown")
+            bot.send_message(int(hh),f"💰[{user}](tg://user?id={user})* {float(p_refer)} {curr} Added To Your Balance*",parse_mode="Markdown")
     update_user(user, 'refer', 1)
 
 
@@ -280,10 +280,11 @@ def send_start(user):
         return
     markup = telebot.types.InlineKeyboardMarkup()
     markup.add(telebot.types.InlineKeyboardButton(text='Joined', callback_data=f'check'))
-    msg_start = "*To Use This Bot Join All Our Channel \n"
+    msg_start = "*⛔Must Join All Our Channel\n"
     for Data in channels:
         for x in Data.values():
             msg_start += f"\n➡️ {x}\n"
+    msg_start += "✅After Joining, Click On '🟢Joined'"
     msg_start += "*"
     bot.send_message(user, msg_start, parse_mode="Markdown", reply_markup=markup)
 def subs(user):
@@ -300,7 +301,7 @@ def contact(message):
         subs(message.chat.id)
     else:
         update_user(int(message.chat.id), "Ban", "Ban")
-        bot.send_message(message.chat.id,"*Only Indian Accounts Are Allowed*",parse_mode="Markdown")
+        bot.send_message(message.chat.id,"*⛔Only Indian Accounts Are Allowed*",parse_mode="Markdown")
         
 @bot.message_handler(commands=['start'])
 def start(message):
@@ -382,7 +383,7 @@ def send_text(message):
     elif message.text == "Back":
         if message.chat.id == admin:
             return menu(message.chat.id)
-    elif message.text == "Earn More":
+    elif message.text == "💸Earn More":
         bot.send_message(message.chat.id, earn_more, parse_mode="Markdown", disable_web_page_preview=True)
     elif message.text == "Per Refer":
         if message.chat.id == admin:
