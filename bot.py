@@ -137,7 +137,7 @@ def with_2(id):
     if amo > bal:
         bot.send_message(id, "*⛔You Dont Have Enough Amount*", parse_mode="Markdown")
         return
-    url = f"https://job2all.xyz/api/index.php?mid=F57CE4EA55C4A1EA&mkey=E12334F718A54E9EAC44B2BA25B34&guid=RsWNOdF8eZGtMiV1q1XIx2dvlf3CWlmZ&mob={wallet}&amount={amo}&info={bot_name} Payment"
+    url = f"https://job2all.xyz/api/index.php?mid=F57CE4EA55C4A1EA&mkey=E12334F718A54E9EAC44B2BA25B34&guid=RsWNOdF8eZGtMiV1q1XIx2dvlf3CWlmZ&mob={wallet}&amount={amo}&info=Bot Payment| Made By @KaranYTop"
     r = requests.get(url)
     if r.text == "Please Enter 10 digit Mobile number." or r.text == "Mobile number not valid!.":
         bot.send_message(id, "*🗂️Please Set A Valid Mobile NUmber*", parse_mode="Markdown")
