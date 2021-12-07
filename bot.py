@@ -1,4 +1,5 @@
 import telebot
+from telebot import types
 import requests
 import pymongo
 url = "mongodb+srv://bot_v2:bot_v2@cluster0.kzreu.mongodb.net/myFirstDatabase?retryWrites=true&w=majority"
@@ -292,7 +293,15 @@ def subs(user):
     else:
         menu(user)
         refer(user)
-
+@bot.message_handler(content_types=['contact'])
+def contact(message):
+    phone = message.contact.phone_number
+    if phone.startswith("+91") or phone.startswith("91"):
+        subs(message.chat.id)
+    else:
+        update_user(int(message.chat.id), "Ban", "Ban")
+        bot.send_message(message.chat.id,"*Only Indian Accounts Are Allowed*",parse_mode="Markdown")
+        
 @bot.message_handler(commands=['start'])
 def start(message):
     user = message.chat.id
@@ -313,7 +322,10 @@ def start(message):
     refer = user_data(user, 'refer')
     if refer == 0:
         update_user(user,"referby",refid)
-    subs(user)
+    keyboard = types.ReplyKeyboardMarkup(row_width=1, resize_keyboard=True)
+    button_phone = types.KeyboardButton(text="Verify Your Account", request_contact=True)
+    keyboard.add(button_phone)
+    bot.send_message(message.chat.id, "Please Verify Your Account By Click On Verify Button", reply_markup=keyboard)
 @bot.message_handler(content_types=['text'])
 def send_text(message):
     curr = get_bot('curr')
