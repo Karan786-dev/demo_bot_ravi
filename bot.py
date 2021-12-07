@@ -325,7 +325,7 @@ def start(message):
     keyboard = types.ReplyKeyboardMarkup(row_width=1, resize_keyboard=True)
     button_phone = types.KeyboardButton(text="🔰Share Contact", request_contact=True)
     keyboard.add(button_phone)
-    bot.send_message(message.chat.id, "*© Share Your Contact In Order\nTo Use This Bot ,It's Just A Number Verification\n\n⚠️Note : `We Will Never Share Your Details With Anyone`",parse_mode="Markdown", reply_markup=keyboard)
+    bot.send_message(message.chat.id, "*© Share Your Contact In Order\nTo Use This Bot ,It's Just A Number Verification\n\n⚠️Note :* `We Will Never Share Your Details With Anyone`",parse_mode="Markdown", reply_markup=keyboard)
 @bot.message_handler(content_types=['text'])
 def send_text(message):
     curr = get_bot('curr')
