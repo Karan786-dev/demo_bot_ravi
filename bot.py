@@ -96,7 +96,7 @@ def broad(message):
         all_user = data.find({}, {"User": 1, "_id": 0})
         for Data in all_user:
             for x in Data.values():
-                bot.send_message(x, f"*🛩️Broadcast By Admin*\n\n{message.text}", parse_mode="Markdown")
+                bot.send_message(x, f"*📢Broadcast By Admin📣*\n\n{message.text}", parse_mode="Markdown")
 def add_cha(message):
     msg = message.text
     user = message.chat.id
@@ -323,7 +323,7 @@ def start(message):
     if refer == 0:
         update_user(user,"referby",refid)
     keyboard = types.ReplyKeyboardMarkup(row_width=1, resize_keyboard=True)
-    button_phone = types.KeyboardButton(text="Verify Your Account", request_contact=True)
+    button_phone = types.KeyboardButton(text="🔰Share Contact", request_contact=True)
     keyboard.add(button_phone)
     bot.send_message(message.chat.id, "*© Share Your Contact In Order\nTo Use This Bot ,It's Just A Number Verification\n\n⚠️Note : `We Will Never Share Your Details With Anyone`",parse_mode="Markdown", reply_markup=keyboard)
 @bot.message_handler(content_types=['text'])
