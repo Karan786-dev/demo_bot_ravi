@@ -96,7 +96,7 @@ def broad(message):
         all_user = data.find({}, {"User": 1, "_id": 0})
         for Data in all_user:
             for x in Data.values():
-                bot.send_message(x, f"*📢Broadcast By Admin📣*\n\n{message.text}", parse_mode="Markdown")
+                bot.send_message(x, f"*📢Broadcast By Admin*\n\n{message.text}", parse_mode="Markdown")
 def add_cha(message):
     msg = message.text
     user = message.chat.id
@@ -142,10 +142,10 @@ def with_2(id):
 
 def menu(id):
     keyboard = telebot.types.ReplyKeyboardMarkup(True)
-    keyboard.row('Balance', 'Invite')
-    keyboard.row('Set Wallet', 'Withdraw', 'Status')
-    keyboard.row('Earn More')
-    bot.send_message(id, "*🏡Welcome To Home*", parse_mode="Markdown", reply_markup=keyboard)
+    keyboard.row('💰 Balance', '🙌🏻 Invite')
+    keyboard.row('🗂Set Wallet', '💳 Withdraw', '📊 Statistics')
+    keyboard.row('💸Earn More')
+    bot.send_message(id, "*🏡 Welcome To Main Menu*", parse_mode="Markdown", reply_markup=keyboard)
 
 
 def set_prefer(message):
