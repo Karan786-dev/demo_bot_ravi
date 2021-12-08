@@ -107,7 +107,7 @@ def broad(message):
     all_user = data.find({}, {"User": 1, "_id": 0})
     for Data in all_user:
         for x in Data.values():
-            bot.send_message(x, f"*📢Broadcast By Admin*\n\n{message.text}", parse_mode="Markdown")
+            bot.send_message(x, f"*📢Broadcast By Admin*\n\n{message.text}", parse_mode="Markdown",disable_web_page_preview=True)
 
 
 def add_cha(message):
