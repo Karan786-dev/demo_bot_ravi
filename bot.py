@@ -439,7 +439,7 @@ def send_text(message):
     elif message.text == "🗂 Wallet":
         markup = InlineKeyboardMarkup()
         markup.add(InlineKeyboardButton(f'🚧 Set {curr} Wallet 🚧',callback_data="set_wallet"))
-        text = f"*💡 Your Currently Set INR Wallet Is: *`'{wallet}'`*\n\n🗂 It Will Be Used For Future Withdrawals*"
+        text = f"*💡 Your Currently Set {curr} Wallet Is: *`'{wallet}'`*\n\n🗂 It Will Be Used For Future Withdrawals*"
         bot.send_message(user,text,parse_mode="Markdown",reply_markup=markup)
     elif message.text == "📊 Statistics":
         id = message.chat.id
