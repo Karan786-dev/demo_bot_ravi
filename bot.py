@@ -1,11 +1,12 @@
 import telebot
 from telebot import types
+from telebot.types import InlineKeyboardMarkup,InlineKeyboardButton
 import requests
 import pymongo
 
 url = "mongodb+srv://bot_v2:bot_v2@cluster0.kzreu.mongodb.net/myFirstDatabase?retryWrites=true&w=majority"
 token = '5011653572:AAH74boE6GAL7CQfdES-izeSDLFXfI1d59w'
-admin = 1468386562
+admins = [1468386562]
 client = pymongo.MongoClient(url)
 db = client['Demo']
 data = db['Demo2']
@@ -25,7 +26,6 @@ def add_cha2(username):
 def check1(user):
     channels = cha.find({}, {"Channel": 1, "_id": 0})
     if channels == None:
-        bot.send_message(admin, "*Please Add Some Channels In Bot*", parse_mode="Markdown")
         return "Not_added"
     for Data in channels:
         for x in Data.values():
@@ -104,19 +104,19 @@ bot = telebot.TeleBot(token)
 
 
 def broad(message):
-    if message.chat.id == admin:
-        all_user = data.find({}, {"User": 1, "_id": 0})
-        for Data in all_user:
-            for x in Data.values():
-                bot.send_message(x, f"*📢Broadcast By Admin*\n\n{message.text}", parse_mode="Markdown")
+    bot.delete_message(message.chat.id, message.message_id)
+    bot.delete_message(message.chat.id, message.message_id - 1)
+    all_user = data.find({}, {"User": 1, "_id": 0})
+    for Data in all_user:
+        for x in Data.values():
+            bot.send_message(x, f"*📢Broadcast By Admin*\n\n{message.text}", parse_mode="Markdown")
 
 
 def add_cha(message):
     msg = message.text
     user = message.chat.id
-    if "@" == msg:
-        bot.send_message(user, "*its Not A Valid Channel Username*", parse_mode="Markdown")
-        return
+    bot.delete_message(message.chat.id, message.message_id)
+    bot.delete_message(message.chat.id, message.message_id - 1)
     bot.send_message(user, "*Channel Has Been Added Make Sure You Make Bot Admin In Channel*", parse_mode="Markdown")
     add_cha2(msg)
 
@@ -124,9 +124,8 @@ def add_cha(message):
 def delete_cha(message):
     msg = message.text
     user = message.chat.id
-    if "@" == msg:
-        bot.send_message(user, "*its Not A Valid Channel Username*", parse_mode="Markdown")
-        return
+    bot.delete_message(message.chat.id, message.message_id)
+    bot.delete_message(message.chat.id, message.message_id - 1)
     bot.send_message(user, "*channel Has been Deleted*", parse_mode="Markdown")
     delete_cha2(msg)
 
@@ -161,12 +160,14 @@ def with_2(id):
 def menu(id):
     keyboard = telebot.types.ReplyKeyboardMarkup(True)
     keyboard.row('💰 Balance', '🙌🏻 Invite')
-    keyboard.row('🗂Set Wallet', '💳 Withdraw', '📊 Statistics')
+    keyboard.row('🗂 Wallet', '💳 Withdraw', '📊 Statistics')
     keyboard.row('💸Earn More')
     bot.send_message(id, "*🏡 Welcome To Main Menu*", parse_mode="Markdown", reply_markup=keyboard)
 
 
 def set_prefer(message):
+    bot.delete_message(message.chat.id, message.message_id)
+    bot.delete_message(message.chat.id, message.message_id - 1)
     curr = get_bot('curr')
     id = message.chat.id
     if message.text.isdigit == False:
@@ -184,6 +185,8 @@ def set_prefer(message):
 
 
 def m_withdraw(message):
+    bot.delete_message(message.chat.id, message.message_id)
+    bot.delete_message(message.chat.id, message.message_id - 1)
     curr = get_bot('curr')
     id = message.chat.id
     amo = int(message.text)
@@ -207,6 +210,8 @@ def Pay_channel(message):
 
 def banu(message):
     id = message.chat.id
+    bot.delete_message(message.chat.id, message.message_id)
+    bot.delete_message(message.chat.id, message.message_id - 1)
     banid = message.text
     if banid.isdigit == True:
         bot.send_message(id, "*Please Send A Valid ID*", parse_mode="Markdown")
@@ -217,6 +222,8 @@ def banu(message):
 
 def unbanu(message):
     id = message.chat.id
+    bot.delete_message(message.chat.id, message.message_id)
+    bot.delete_message(message.chat.id, message.message_id - 1)
     banid = message.text
     if banid.isdigit == True:
         bot.send_message(id, "*Please Send A Valid ID*", parse_mode="Markdown")
@@ -227,6 +234,9 @@ def unbanu(message):
 
 def setnum(message):
     land = num.find_one({"Number": message.text})
+    bot.delete_message(message.chat.id, message.message_id)
+    bot.delete_message(message.chat.id, message.message_id - 1)
+    bot.delete_message(message.chat.id, message.message_id - 2)
     if message.text.isdigit == False:
         bot.send_message(message.chat.id, "*⛔Please Send A Valid Mobile Number*", parse_mode="Markdown")
     elif len(message.text) != 10:
@@ -242,7 +252,7 @@ def setnum(message):
 @bot.message_handler(commands=['add'])
 def add(message):
     id = message.chat.id
-    if id == admin:
+    if id in admins:
         oldbal = user_data(id, 'Balance')
         newbal = oldbal + 1000
         update_user(id, 'Balance', float(newbal))
@@ -250,30 +260,60 @@ def add(message):
 
 @bot.message_handler(commands=['panel'])
 def panel(message):
-    if message.chat.id == admin:
+    if message.chat.id in admins:
         pay_c = get_bot('P_channel')
         curr = get_bot('curr')
         m_with = get_bot('M_with')
         per_refer = get_bot('P_refer')
         channels = cha.find({}, {"Channel": 1, "_id": 0})
         if channels == None:
-            bot.send_message(admin, "*Please Add Some Channels In Bot*", parse_mode="Markdown")
             return
         text = "*Channels : \n"
         for Data in channels:
             for x in Data.values():
                 text += f"{x}\n"
-        text += f"\nPer Refer : {per_refer} {curr}\nMinimun Withdraw : {m_with} {curr}\nPayment Channel : {pay_c}"
+        text += f"Per Refer : {per_refer} {curr}\nMinimun Withdraw : {m_with} {curr}\nPayment Channel : {pay_c}"
         text += "*"
-
-        keyboard = telebot.types.ReplyKeyboardMarkup(True)
-        keyboard.row('Ban', 'Unban', 'Broadcast')
-        keyboard.row('Add Channel', 'Delete Channel')
-        keyboard.row('Set Currency')
-        keyboard.row('Per Refer', 'Minimum Withdraw', 'Pay Channel')
-        keyboard.row('Back')
-        bot.send_message(admin,text, parse_mode="Markdown", reply_markup=keyboard)
-
+        markup = InlineKeyboardMarkup()
+        markup.row_width = 2
+        markup.add(InlineKeyboardButton('Per Refer',callback_data="Per_r"),InlineKeyboardButton('Minimum Withdraw',callback_data="Minimum_w"),
+    InlineKeyboardButton("Add Channel",callback_data="Add_cha"),InlineKeyboardButton("Delete Channel",callback_data="Delete_cha"),InlineKeyboardButton("Pay Channel",callback_data="Pay_cha"),
+    InlineKeyboardButton("Ban",callback_data="Ban"),InlineKeyboardButton("Unban",callback_data="Unban"),InlineKeyboardButton("Broadcast",callback_data="Broad"),
+    InlineKeyboardButton("Set Currency",callback_data="Set_curr"))
+        bot.send_message(message.chat.id,text, parse_mode="Markdown", reply_markup=markup)
+@bot.callback_query_handler(func=lambda call : True)
+def callbck_query(call):
+    user = call.message.chat.id
+    if call.data == 'Per_r':
+        msg = bot.send_message(user, "*Send Amount You Want To Set*", parse_mode="Markdown")
+        bot.register_next_step_handler(msg, set_prefer)
+    elif call.data == 'Minimum_w':
+        msg = bot.send_message(user, "*Send Amount You Want To Set*", parse_mode="Markdown")
+        bot.register_next_step_handler(msg, m_withdraw)
+    elif call.data == 'Add_cha':
+        msg = bot.send_message(user, "*Send Channel Username You Want To Add*", parse_mode="Markdown")
+        bot.register_next_step_handler(msg, add_cha)
+    elif call.data == 'Delete_cha':
+        msg = bot.send_message(user, "*Send Channel Username You Want To Delete*", parse_mode="Markdown")
+        bot.register_next_step_handler(msg, delete_cha)
+    elif call.data == 'Pay_cha':
+        msg = bot.send_message(user, "*Send Channel Username You Want To Set*", parse_mode="Markdown")
+        bot.register_next_step_handler(msg, Pay_channel)
+    elif call.data == 'Ban':
+        msg = bot.send_message(user,"*Send His telegram Id*",parse_mode="Markdown")
+        bot.register_next_step_handler(msg,banu)
+    elif call.data == 'Unban':
+        msg = bot.send_message(user, "*Send His Telegram Id*", parse_mode="Markdown")
+        bot.register_next_step_handler(msg, unbanu)
+    elif call.data == 'Set_curr':
+        msg = bot.send_message(user, "*Send Currency Name You Want To Set*", parse_mode="Markdown")
+        bot.register_next_step_handler(msg, set_curr)
+    elif call.data == 'Broad':
+        msg = bot.send_message(user, "*Send Message You Want To Broadcast*", parse_mode="Markdown")
+        bot.register_next_step_handler(msg, broad)
+    elif call.data == 'set_wallet':
+        msg = bot.send_message(user, "*🗂️Send Your Paytm Number\n\n⚠️Notice: You Cant Change Your Wallet Again*",parse_mode="Markdown")
+        bot.register_next_step_handler(msg, setnum)
 
 def refer(user):
     curr = get_bot('curr')
@@ -301,14 +341,13 @@ def refer(user):
 def send_start(user):
     channels = cha.find({}, {"Channel": 1, "_id": 0})
     if channels == None:
-        bot.send_message(admin, "*Please Add Some Channels In Bot*", parse_mode="Markdown")
         return
     keyboard = telebot.types.ReplyKeyboardMarkup(True)
     keyboard.row('🟢Joined')
-    msg_start = "*⛔Must Join All Our Channel\n\n"
+    msg_start = "*⛔Must Join All Our Channel\n"
     for Data in channels:
         for x in Data.values():
-            msg_start += f"{x}\n"
+            msg_start += f"\n {x}\n"
     msg_start += "\n✅After Joining, Click On '🟢Joined'"
     msg_start += "*"
     bot.send_message(user, msg_start, parse_mode="Markdown", reply_markup=keyboard)
@@ -368,6 +407,10 @@ def send_text(message):
     m_with = get_bot('M_with')
     per_refer = get_bot('P_refer')
     user = message.chat.id
+    if user in admins:
+        admin = user
+    else:
+        admin = 1
     msg = message.text
     wallet = user_data(user, "Wallet")
     ban = user_data(user, 'Ban')
@@ -392,10 +435,11 @@ def send_text(message):
         bot_name = bot.get_me().username
         msg = f"*🙌🏻 User = {message.from_user.first_name}\n\n🙌🏻 Your Invite Link = https://t.me/{bot_name}?start={user}\n\n🧬Invite To {per_refer} {curr}*"
         bot.send_message(user, msg, parse_mode="Markdown")
-    elif message.text == "🗂Set Wallet":
-        bot.send_message(message.chat.id, "*🗂️Send Your Paytm Number\n\n⚠️Notice: You Cant Change Your Wallet Again*",
-                         parse_mode="Markdown")
-        bot.register_next_step_handler(message, setnum)
+    elif message.text == "🗂 Wallet":
+        markup = InlineKeyboardMarkup()
+        markup.add(InlineKeyboardButton(f'🚧 Set {curr} Wallet 🚧',callback_data="set_wallet"))
+        text = f"*💡 Your Currently Set INR Wallet Is: *`'{wallet}'`*\n\n🗂 It Will Be Used For Future Withdrawals*"
+        bot.send_message(user,text,parse_mode="Markdown",reply_markup=markup)
     elif message.text == "📊 Statistics":
         id = message.chat.id
         witth = get_bot('Totalw')
@@ -412,51 +456,9 @@ def send_text(message):
             bot.send_message(id, "*⛔Please Set Your Wallet First*", parse_mode="Markdown")
         else:
             with_2(id)
-    elif message.text == "Ban":
-        if message.chat.id == admin:
-            bot.send_message(message.chat.id, "*Send His Telegram Id*", parse_mode="Markdown")
-            bot.register_next_step_handler(message, banu)
-        else:
-            bot.send_message(message.chat.id, "*You Are Not A Admin*", parse_mode="Markdown")
-    elif message.text == "Unban":
-        if message.chat.id == admin:
-            bot.send_message(message.chat.id, "*Send His Telegram Id*", parse_mode="Markdown")
-            bot.register_next_step_handler(message, unbanu)
-        else:
-            bot.send_message(message.chat.id, "*You Are Not A Admin*", parse_mode="Markdown")
-    elif message.text == "Back":
-        if message.chat.id == admin:
-            return menu(message.chat.id)
     elif message.text == "💸Earn More":
         bot.send_message(message.chat.id, earn_more, parse_mode="Markdown", disable_web_page_preview=True)
-    elif message.text == "Per Refer":
-        if message.chat.id == admin:
-            bot.send_message(message.chat.id, "*Send Amount You Want To Set*", parse_mode="Markdown")
-            bot.register_next_step_handler(message, set_prefer)
-    elif message.text == "Pay Channel":
-        if message.chat.id == admin:
-            bot.send_message(message.chat.id, "*Send Channel Username You Want To Set*", parse_mode="Markdown")
-            bot.register_next_step_handler(message, Pay_channel)
-    elif message.text == "Minimum Withdraw":
-        if message.chat.id == admin:
-            bot.send_message(message.chat.id, "*Send Amount You Want To Set*", parse_mode="Markdown")
-            bot.register_next_step_handler(message, m_withdraw)
-    elif message.text == "Set Currency":
-        if message.chat.id == admin:
-            bot.send_message(message.chat.id, "*Send Currency Name You Want To Set*", parse_mode="Markdown")
-            bot.register_next_step_handler(message, set_curr)
-    elif message.text == "Broadcast":
-        if message.chat.id == admin:
-            bot.send_message(message.chat.id, "*Send Message You Want To Broadcast*", parse_mode="Markdown")
-            bot.register_next_step_handler(message, broad)
-    elif message.text == "Add Channel":
-        if message.chat.id == admin:
-            bot.send_message(message.chat.id, "*Send Channel Username You Want To Add*", parse_mode="Markdown")
-            bot.register_next_step_handler(message, add_cha)
-    elif message.text == "Delete Channel":
-        if message.chat.id == admin:
-            bot.send_message(message.chat.id, "*Send Channel Username You Want To Delete*", parse_mode="Markdown")
-            bot.register_next_step_handler(message, delete_cha)
+
 
 
 print("Done")
