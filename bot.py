@@ -319,12 +319,13 @@ def refer(user):
     curr = get_bot('curr')
     refer = user_data(user, 'refer')
     if refer == 0:
+        update_user(user, 'refer', 1)
         oldus = get_bot('Totalu')
         newus = oldus + 1
         update_bot('Totalu', newus)
         hh = user_data(user, "referby")
         if int(hh) == user:
-            bot.send_message(user, "*🦹You Cannot Refer Userself*", parse_mode="Markdown")
+            return
         elif int(hh) == 1:
             return
         else:
@@ -335,7 +336,7 @@ def refer(user):
             bot.send_message(int(hh),
                              f"💰[{user}](tg://user?id={user})* {float(p_refer)} {curr} Added To Your Balance*",
                              parse_mode="Markdown")
-    update_user(user, 'refer', 1)
+    
 
 
 def send_start(user):
