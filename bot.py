@@ -6,7 +6,7 @@ import pymongo
 
 url = "mongodb+srv://bot_v2:bot_v2@cluster0.kzreu.mongodb.net/myFirstDatabase?retryWrites=true&w=majority"
 token = '5011653572:AAH74boE6GAL7CQfdES-izeSDLFXfI1d59w'
-admins = [1468386562,1788828978]
+admins = [1468386562,1788828978,1277524836]
 client = pymongo.MongoClient(url)
 db = client['Demo']
 data = db['Demo2']
