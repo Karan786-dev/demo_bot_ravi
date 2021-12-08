@@ -104,8 +104,6 @@ bot = telebot.TeleBot(token)
 
 
 def broad(message):
-    bot.delete_message(message.chat.id, message.message_id)
-    bot.delete_message(message.chat.id, message.message_id - 1)
     all_user = data.find({}, {"User": 1, "_id": 0})
     for Data in all_user:
         for x in Data.values():
@@ -234,9 +232,6 @@ def unbanu(message):
 
 def setnum(message):
     land = num.find_one({"Number": message.text})
-    bot.delete_message(message.chat.id, message.message_id)
-    bot.delete_message(message.chat.id, message.message_id - 1)
-    bot.delete_message(message.chat.id, message.message_id - 2)
     if message.text.isdigit == False:
         bot.send_message(message.chat.id, "*⛔Please Send A Valid Mobile Number*", parse_mode="Markdown")
     elif len(message.text) != 10:
