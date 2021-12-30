@@ -13,17 +13,3 @@ merchant_id = "Merchant Id Here"
 merchant_key = "Merchant Key Here"
 subwallet_key = "Subwallet Key Here"
 pay_comment = "Bot Payment| Made By @KaranYTop"
-
-#Earn More Message
-earn_more = '''*Sign up bonus 600 TRX
-
-1️⃣ Level   10%
-2️⃣ Level    6%
-3️⃣ Level    3%
-
-1 Refer 30 TRX
-
-New TRX website link https://www.trx.pub/#/extendReg?id=19179788
-
-Join our community:-
-https://t.me/New_TrxSites*'''
