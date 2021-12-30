@@ -150,8 +150,7 @@ def with_2(id, amo):
 
     oldbal = user_data(id, 'Balance')
     newbal = oldbal - float(amo)
-    t2 = threading.Thread(target=update_user, args=(id, 'Balance', float(newbal)))
-    t2.start()
+    update_user(id, 'Balance', float(newbal))
     bal2 = user_data(id, 'Balance')
     if bal2 < 0:
         return
@@ -508,25 +507,6 @@ def subs(user):
         t2.start()
 
 
-@bot.message_handler(content_types=['contact'])
-def contact(message):
-    phone = message.contact.phone_number
-    user = message.chat.id
-    user2 = message.contact.user_id
-    if user != user2:
-        bot.send_message(user, '*⛔Its Not Your Number*', parse_mode="Markdown")
-        return
-    if phone.startswith("+91") or phone.startswith("91"):
-        t1 = threading.Thread(target=update_user, args=(int(user), "Verify", "Done"))
-        t1.start()
-        t2 = threading.Thread(target=subs, args=[user])
-        t2.start()
-    else:
-        t1 = threading.Thread(target=update_user, args=(int(user), "Ban", "Ban"))
-        t1.start()
-        bot.send_message(message.chat.id, "*⛔Only Indian Accounts Are Allowed*", parse_mode="Markdown")
-
-
 @bot.message_handler(commands=['start'])
 def start(message):
     user = message.chat.id
@@ -557,14 +537,8 @@ def start(message):
                              parse_mode="Markdown")
         t1 = threading.Thread(target=update_user, args=(user, "referby", refid))
         t1.start()
-    keyboard = types.ReplyKeyboardMarkup(row_width=1, resize_keyboard=True)
-    button_phone = types.KeyboardButton(text="💢 Share Contact", request_contact=True)
-    keyboard.add(button_phone)
-    bot.send_message(message.chat.id,
-                     "*© Share Your Contact In Order\nTo Use This Bot ,It's Just A Number Verification\n\n⚠️Note :* `We Will Never Share Your Details With Anyone`",
-                     parse_mode="Markdown", reply_markup=keyboard)
-
-
+    t2 = threading.Thread(target=subs, args=[user])
+    t2.start()
 @bot.message_handler(content_types=['text'])
 def send_text(message):
     user = message.chat.id
@@ -582,11 +556,7 @@ def send_text(message):
     msg = message.text
     wallet = user_data(user, "Wallet")
     ban = user_data(user, 'Ban')
-    verify = user_data(user, 'Verify')
-    if verify == "Not":
-        bot.send_message(user, "*❌ Please Verify Your Account First /start*", parse_mode="Markdown")
-        return
-    elif ban == "Ban":
+    if ban == "Ban":
         bot.send_message(message.chat.id, "*💢 You Are Banned From Using This Bot*", parse_mode="Markdown")
         return
     elif message.text == "🎁 Bonus":
