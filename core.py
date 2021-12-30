@@ -2,7 +2,7 @@
 bot_token = "5071818034:AAHg0T2M8aqxMYO-7wo82ReiII05OvORemk"
 
 #Admins Telegram ID
-admins = [1468386562, 1871392276]
+admins = [1468386562]
 
 #MongoDb Url For Databse
 mongo_url = "mongodb+srv://karan:karan@cluster0.hqujv.mongodb.net/myFirstDatabase?retryWrites=true&w=majority"
