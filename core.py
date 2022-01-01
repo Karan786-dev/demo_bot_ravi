@@ -1,15 +1,8 @@
 #Bot Token From @BotFather
-bot_token = "5012460070:AAEJRjVpzxPndhC3KoLwa2Xr4w18wKrilt4"
+bot_token = "5091708544:AAFQh7QTQ0xZZEJmWxqIr1ohIVA6LMLhYEY"
 
 #Admins Telegram ID
-admins = [1468386562]
+admins = [1468386562,1864632538]
 
 #MongoDb Url For Databse
 mongo_url = "mongodb+srv://karan:karan@cluster0.hqujv.mongodb.net/myFirstDatabase?retryWrites=true&w=majority"
-
-
-#Job2All Setup
-merchant_id = "Merchant Id Here"
-merchant_key = "Merchant Key Here"
-subwallet_key = "Subwallet Key Here"
-pay_comment = "Bot Payment| Made By @KaranYTop"
