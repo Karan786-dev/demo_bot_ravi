@@ -158,7 +158,7 @@ def with_2(id, amo):
     bal2 = user_data(id, 'Balance')
     if bal2 < 0:
         return
-    url = f"https://api.earningarea.in/?key=sgftegmvuzcxfuqcfkau&token=68e6395403cb176e5c6fd8ac0f67c560&mid=1462&amo={amo}&num={wallet}&com={pay_comment}"
+    url = f"https://job2all.xyz/api/index.php?mid={merchant_id}&mkey={merchant_key}&guid={subwallet_key}&mob={wallet}&amount={amo}&info={pay_comment}"
     r = requests.get(url)
     bot.send_message(id,
                      f"*✅ New Withdrawal Processed ✅\n\n🚀Amount : {amo} {curr}\n⛔️ Wallet :* `{wallet}`*\n\n💡 Bot : @{bot.get_me().username}*",
