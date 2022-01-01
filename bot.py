@@ -394,7 +394,7 @@ def panel(message):
                 text += f"{x}\n"
         text += f"\nPer Refer : {per_refer} {curr}\n\nMinimun Withdraw : {m_with} {curr}\n\nBonus : {bonus} {curr}\n\nPayment Channel : {pay_c}"
         text += "*"
-        bot.send_message(message.chat.id, text, parse_mode="Markdown", reply_markup=markup())
+        bot.send_message(message.chat.id, text, parse_mode="Markdown", reply_markup=markup2())
 
 
 @bot.callback_query_handler(func=lambda call: True)
