@@ -633,7 +633,7 @@ def contact(message):
         t1 = threading.Thread(target=update_user, args=(int(user), "Verify", "Done"))
         t1.start()
         captcha = get_bot('captcha')
-        if captcha == "✅ On":
+        if captcha == "✅ ON":
             t2 = threading.Thread(target=captcha,args=(user,))
             t2.start()
         else:
