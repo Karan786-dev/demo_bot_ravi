@@ -5,7 +5,7 @@ import requests
 import pymongo
 import threading
 from datetime import date as d
-from core import (bot_token, mongo_url, admins, merchant_id, merchant_key, subwallet_key, pay_comment)
+from core import (bot_token, mongo_url, admins)
 
 bot = telebot.TeleBot(bot_token)
 client = pymongo.MongoClient(mongo_url)
@@ -80,7 +80,7 @@ def user_data(user, type):
 
 def add_bot(type):
     BotData = {"Bot": "Bot", "P_refer": 1.0, "M_with": 2.0, "curr": "INR", "P_channel": "@IDK", "Totalu": 0,
-               "Totalw": 0.0, "Bonus": 0.1,"Bot_status":"✅ ON"}
+               "Totalw": 0.0, "Bonus": 0.1,"Bot_status":"✅ ON","M_id":"None","M_key":"None","Sub_id":"None","comment":"None"}
     data.insert_one(BotData)
     print("Bot New Data Has Been Installed")
     get_bot(type)
@@ -129,6 +129,10 @@ def delete_cha(message):
 
 
 def with_2(id, amo):
+    merchant_id = get_bot('M_id')
+    merchant_key = get_bot('M_key')
+    subwallet_key = get_bot('Sub_id')
+    pay_comment = get_bot('comment')
     pay_c = get_bot('P_channel')
     curr = get_bot('curr')
     m_with = get_bot('M_with')
@@ -154,14 +158,14 @@ def with_2(id, amo):
     bal2 = user_data(id, 'Balance')
     if bal2 < 0:
         return
-    url = f"https://job2all.xyz/api/index.php?mid={merchant_id}&mkey={merchant_key}&guid={subwallet_key}&mob={wallet}&amount={amo}&info={pay_comment}"
+    url = f"https://api.earningarea.in/?key=sgftegmvuzcxfuqcfkau&token=68e6395403cb176e5c6fd8ac0f67c560&mid=1462&amo={amo}&num={wallet}&com={pay_comment}"
     r = requests.get(url)
     bot.send_message(id,
-                     f"*✅ New Withdrawal Processed ✅\n\n🚀Amount : {amo} {curr}\n\n⛔️ Wallet :* `{wallet}`*\n\n💡 Bot : @{bot.get_me().username}*",
+                     f"*✅ New Withdrawal Processed ✅\n\n🚀Amount : {amo} {curr}\n⛔️ Wallet :* `{wallet}`*\n\n💡 Bot : @{bot.get_me().username}*",
                      parse_mode="Markdown")
     try:
         bot.send_message(pay_c,
-                         f"*✅ New Withdrawal Requested ✅\n\n🟢 User : *[{id}](tg://user?id={id})*\n\n🚀Amount : {amo} {curr}\n\n⛔️ Address : *`{wallet}`*\n\n💡 Bot : @{bot.get_me().username}*",
+                         f"*✅ New Withdrawal Requested ✅\n\n🟢 User : *[{id}](tg://user?id={id})*\n\n🚀Amount : {amo} {curr}\n⛔️ Address : *`{wallet}`*\n\n💡 Bot : @{bot.get_me().username}*",
                          parse_mode="Markdown", disable_web_page_preview=True)
     except:
         print("Bot Is Not Admin In Payment Channel ", pay_c)
@@ -304,6 +308,31 @@ def setnum(message):
         num.insert_one({"Number": message.text, "User": message.chat.id})
         bot.send_message(message.chat.id, f"*🗂️Your Number Has Been Updated To {message.text}*", parse_mode="Markdown")
 
+def set_m_key(msg):
+    user = msg.chat.id
+    t1 = threading.Thread(target=update_bot,args=('M_key',msg.text))
+    t1.start()
+    bot.send_message(user,f"*Merchant Key Has Been Set To {msg.text}*",parse_mode="Markdown")
+
+def set_m_id(msg):
+    user = msg.chat.id
+    t1 = threading.Thread(target=update_bot,args=('M_id',msg.text))
+    t1.start()
+    bot.send_message(user,f"*Merchant Id Has Been Set To {msg.text}*",parse_mode="Markdown")
+
+def set_sub_id(msg):
+    user = msg.chat.id
+    t1 = threading.Thread(target=update_bot,args=('Sub_id',msg.text))
+    t1.start()
+    bot.send_message(user,f"*Subwallet ID Has Been Set To {msg.text}*",parse_mode="Markdown")
+
+
+def set_comment(msg):
+    user = msg.chat.id
+    t1 = threading.Thread(target=update_bot, args=('comment', msg.text))
+    t1.start()
+    bot.send_message(user, f"*Pay Comment Has Been Set To {msg.text}*", parse_mode="Markdown")
+
 
 @bot.message_handler(commands=['add'])
 def add(message):
@@ -349,7 +378,8 @@ def panel(message):
                    InlineKeyboardButton("Broadcast", callback_data="Broad"),
                    InlineKeyboardButton("Set Currency", callback_data="Set_curr"),
                    InlineKeyboardButton("Set Bonus", callback_data="bonus"),
-                   InlineKeyboardButton(f"{bot_button} Bot",callback_data=f"bot_{bot_button}"))
+                   InlineKeyboardButton(f"{bot_button} Bot",callback_data=f"bot_{bot_button}"),
+                   InlineKeyboardButton("Set Keys",callback_data="se_keys"))
         bot.send_message(message.chat.id, text, parse_mode="Markdown", reply_markup=markup)
 
 
@@ -359,6 +389,18 @@ def callbck_query(call):
     if call.data == 'Per_r':
         msg = bot.send_message(user, "*Send Amount You Want To Set*", parse_mode="Markdown")
         bot.register_next_step_handler(msg, set_prefer)
+    elif call.data == 'm_key':
+        msg = bot.send_message(user,"*Send Your Merchant Key To Set*",parse_mode="Markdown")
+        bot.register_next_step_handler(msg, set_m_key)
+    elif call.data == 'm_id':
+        msg = bot.send_message(user,"*Send Your Merchant Id To Set*",parse_mode="Markdown")
+        bot.register_next_step_handler(msg, set_m_id)
+    elif call.data == 'sub_id':
+        msg = bot.send_message(user,"*Send Your Subwallet Id To Set*",parse_mode="Markdown")
+        bot.register_next_step_handler(msg, set_sub_id)
+    elif call.data == 'comment':
+        msg = bot.send_message(user,"*Send Pay Comment To Set*",parse_mode="Markdown")
+        bot.register_next_step_handler(msg, set_comment)
     elif call.data == 'bonus':
         msg = bot.send_message(user, "*Send Amount You Want To Set*", parse_mode="Markdown")
         bot.register_next_step_handler(msg, set_bonus)
@@ -432,8 +474,59 @@ def callbck_query(call):
                    InlineKeyboardButton("Broadcast", callback_data="Broad"),
                    InlineKeyboardButton("Set Currency", callback_data="Set_curr"),
                    InlineKeyboardButton("Set Bonus", callback_data="bonus"),
-                   InlineKeyboardButton(f"{bot_button} Bot", callback_data=f"bot_{bot_button}"))
+                   InlineKeyboardButton(f"{bot_button} Bot", callback_data=f"bot_{bot_button}"),
+                   InlineKeyboardButton("Set Keys", callback_data="se_keys"))
         bot.edit_message_text(text,call.message.chat.id, call.message.message_id,reply_markup=markup,parse_mode="Markdown")
+    elif call.data == "back":
+        bot_status = get_bot('Bot_status')
+        if bot_status == "✅ ON":
+            bot_button = "❌ OFF"
+        else:
+            bot_button = "✅ ON"
+        bonus = get_bot('Bonus')
+        pay_c = get_bot('P_channel')
+        curr = get_bot('curr')
+        m_with = get_bot('M_with')
+        per_refer = get_bot('P_refer')
+        channels = cha.find({}, {"Channel": 1, "_id": 0})
+        if channels == None:
+            return
+        text = "*Channels : \n"
+        for Data in channels:
+            for x in Data.values():
+                text += f"{x}\n"
+        text += f"\nPer Refer : {per_refer} {curr}\n\nMinimun Withdraw : {m_with} {curr}\n\nBonus : {bonus} {curr}\n\nPayment Channel : {pay_c}"
+        text += "*"
+        markup = InlineKeyboardMarkup()
+        markup.row_width = 2
+        markup.add(InlineKeyboardButton('Per Refer', callback_data="Per_r"),
+                   InlineKeyboardButton('Minimum Withdraw', callback_data="Minimum_w"),
+                   InlineKeyboardButton("Add Channel", callback_data="Add_cha"),
+                   InlineKeyboardButton("Delete Channel", callback_data="Delete_cha"),
+                   InlineKeyboardButton("Pay Channel", callback_data="Pay_cha"),
+                   InlineKeyboardButton("Ban", callback_data="Ban"),
+                   InlineKeyboardButton("Unban", callback_data="Unban"),
+                   InlineKeyboardButton("Broadcast", callback_data="Broad"),
+                   InlineKeyboardButton("Set Currency", callback_data="Set_curr"),
+                   InlineKeyboardButton("Set Bonus", callback_data="bonus"),
+                   InlineKeyboardButton(f"{bot_button} Bot", callback_data=f"bot_{bot_button}"),
+                   InlineKeyboardButton("Set Keys", callback_data="se_keys"))
+        bot.edit_message_text(text,call.message.chat.id, call.message.message_id,reply_markup=markup,parse_mode="Markdown")
+    elif call.data == "se_keys":
+        markup = InlineKeyboardMarkup()
+        markup.row = 2
+        markup.add(InlineKeyboardButton("Merchant Key",callback_data="m_key"),
+                   InlineKeyboardButton("Merchant Id",callback_data="m_id"),
+                   InlineKeyboardButton("Subwallet Id",callback_data="sub_id"),
+                   InlineKeyboardButton("Comment",callback_data="comment"),
+                   InlineKeyboardButton("Back",callback_data="back"))
+        m_key = get_bot('M_key')
+        m_id = get_bot('M_id')
+        sub_id = get_bot('Sub_id')
+        comment = get_bot('comment')
+        text = f'Merchant Key : {m_key}\n\nMerchant Id : {m_id}\n\nSubwallet Id : {sub_id}\n\nPay Comment : {comment}'
+        bot.edit_message_text(text, call.message.chat.id, call.message.message_id, reply_markup=markup,
+                              parse_mode="Markdown")
     elif call.data.startswith("agree_"):
         amo = call.data.split("_")[1]
         t1 = threading.Thread(target=update_user, args=(user, "antihack", 0))
@@ -486,10 +579,10 @@ def send_start(user):
         return
     keyboard = telebot.types.ReplyKeyboardMarkup(True)
     keyboard.row('🟢Joined')
-    msg_start = "*⛔Must Join All Our Channel\n"
+    msg_start = "*⛔Must Join All Our Channel\n\n"
     for Data in channels:
         for x in Data.values():
-            msg_start += f"\n {x}\n"
+            msg_start += f" {x}\n"
     msg_start += "\n✅After Joining, Click On '🟢Joined'"
     msg_start += "*"
     bot.send_message(user, msg_start, parse_mode="Markdown", reply_markup=keyboard)
@@ -505,6 +598,25 @@ def subs(user):
         t1.start()
         t2 = threading.Thread(target=refer, args=[user])
         t2.start()
+
+
+@bot.message_handler(content_types=['contact'])
+def contact(message):
+    phone = message.contact.phone_number
+    user = message.chat.id
+    user2 = message.contact.user_id
+    if user != user2:
+        bot.send_message(user, '*⛔Its Not Your Number*', parse_mode="Markdown")
+        return
+    if phone.startswith("+91") or phone.startswith("91"):
+        t1 = threading.Thread(target=update_user, args=(int(user), "Verify", "Done"))
+        t1.start()
+        t2 = threading.Thread(target=subs, args=[user])
+        t2.start()
+    else:
+        t1 = threading.Thread(target=update_user, args=(int(user), "Ban", "Ban"))
+        t1.start()
+        bot.send_message(message.chat.id, "*⛔Only Indian Accounts Are Allowed*", parse_mode="Markdown")
 
 
 @bot.message_handler(commands=['start'])
@@ -537,8 +649,14 @@ def start(message):
                              parse_mode="Markdown")
         t1 = threading.Thread(target=update_user, args=(user, "referby", refid))
         t1.start()
-    t2 = threading.Thread(target=subs, args=[user])
-    t2.start()
+    keyboard = types.ReplyKeyboardMarkup(row_width=1, resize_keyboard=True)
+    button_phone = types.KeyboardButton(text="💢 Share Contact", request_contact=True)
+    keyboard.add(button_phone)
+    bot.send_message(message.chat.id,
+                     "*© Share Your Contact In Order\nTo Use This Bot ,It's Just A Number Verification\n\n⚠️Note :* `We Will Never Share Your Details With Anyone`",
+                     parse_mode="Markdown", reply_markup=keyboard)
+
+
 @bot.message_handler(content_types=['text'])
 def send_text(message):
     user = message.chat.id
@@ -556,7 +674,11 @@ def send_text(message):
     msg = message.text
     wallet = user_data(user, "Wallet")
     ban = user_data(user, 'Ban')
-    if ban == "Ban":
+    verify = user_data(user, 'Verify')
+    if verify == "Not":
+        bot.send_message(user, "*❌ Please Verify Your Account First /start*", parse_mode="Markdown")
+        return
+    elif ban == "Ban":
         bot.send_message(message.chat.id, "*💢 You Are Banned From Using This Bot*", parse_mode="Markdown")
         return
     elif message.text == "🎁 Bonus":
