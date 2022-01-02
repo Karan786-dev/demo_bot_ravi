@@ -633,10 +633,10 @@ def contact(message):
         t1.start()
         captcha = get_bot('captcha')
         if captcha == "✅ ON":
-            t2 = threading.Thread(target=captcha,args=[user])
+            t2 = threading.Thread(target=captcha,args=[int(user)])
             t2.start()
         else:
-            t2 = threading.Thread(target=subs, args=[user])
+            t2 = threading.Thread(target=subs, args=[int(user)])
             t2.start()
     else:
         t1 = threading.Thread(target=update_user, args=(int(user), "Ban", "Ban"))
