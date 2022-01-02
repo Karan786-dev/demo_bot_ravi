@@ -606,15 +606,13 @@ def subs(user):
         t2 = threading.Thread(target=refer, args=[user])
         t2.start()
 def verify(msg,code2):
-    print(msg.text)
-    print(code2)
     if code2 == int(msg.text):
 
-        t2 = threading.Thread(target=subs, args=[msg.chat.id])
+        t2 = threading.Thread(target=subs, args=[int(msg.chat.id)])
         t2.start()
     else:
         bot.send_message(msg.chat.id, "*❌ Wrong Answer Try Again*", parse_mode="Markdown")
-        t1 = threading.Thread(target=captcha,args=[msg.chat.id])
+        t1 = threading.Thread(target=captcha,args=[int(msg.chat.id)])
         t1.start()
 
 def captcha(user):
