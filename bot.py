@@ -618,7 +618,7 @@ def verify(msg,code2):
 def captcha(user):
     code = random.randint(1000, 9999)
     url = f'https://shadabalam.cf/api/captcha.php?captcha={code}'
-    bot.send_photo(user, url, 'Send code In The Photo')
+    msg = bot.send_photo(user, url, 'Send code In The Photo')
     bot.register_next_step_handler(msg, verify, code)
 @bot.message_handler(content_types=['contact'])
 def contact(message):
