@@ -130,7 +130,7 @@ def broad_2(msg,id):
     for Data in all_user:
         for x in Data.values():
             try:
-                bot.send_message(x, f"*📢Broadcast By Admin*\n\n{msg}", parse_mode="Markdown",
+                bot.send_message(x, f"*📣 Broadcast*\n\n{msg}", parse_mode="Markdown",
                                  disable_web_page_preview=True)
             except:
                 print("User Blocked Me ", x)
