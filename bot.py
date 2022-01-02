@@ -477,11 +477,7 @@ def callbck_query(call):
         status = call.data.split('_')[1]
         t1 = threading.Thread(target=update_bot,args=("Bot_status",status))
         t1.start()
-        bot_status = get_bot('Bot_status')
-        if bot_status == "✅ ON":
-            bot_button = "❌ OFF"
-        else:
-            bot_button = "✅ ON"
+        bot.answer_callback_query(call.message.message_id,f"Your Bot Is {status} Now",show_alert=True)
         bonus = get_bot('Bonus')
         pay_c = get_bot('P_channel')
         curr = get_bot('curr')
