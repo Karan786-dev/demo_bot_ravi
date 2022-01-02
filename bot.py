@@ -407,6 +407,7 @@ def callbck_query(call):
         gg = call.data.split('_')[1]
         t1 = threading.Thread(target=update_bot,args=('captcha',gg))
         t1.start()
+        bot.answer_callback_query(callback_query_id=call.id,text=f"Captcha Is {gg} Now",show_alert=False)
         bonus = get_bot('Bonus')
         pay_c = get_bot('P_channel')
         curr = get_bot('curr')
