@@ -477,7 +477,8 @@ def callbck_query(call):
         status = call.data.split('_')[1]
         t1 = threading.Thread(target=update_bot,args=("Bot_status",status))
         t1.start()
-        bot.answer_callback_query(callback_query_id=call.message.message_id,text=f"Your Bot Is {status} Now",show_alert=True)
+        print(call)
+        #bot.answer_callback_query(callback_query_id=call.message.message_id,text=f"Your Bot Is {status} Now",show_alert=True)
         bonus = get_bot('Bonus')
         pay_c = get_bot('P_channel')
         curr = get_bot('curr')
