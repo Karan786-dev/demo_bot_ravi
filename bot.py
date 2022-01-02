@@ -631,9 +631,9 @@ def contact(message):
     if phone.startswith("+91") or phone.startswith("91"):
         t1 = threading.Thread(target=update_user, args=(int(user), "Verify", "Done"))
         t1.start()
-        captcha = get_bot('captcha')
-        if captcha == "✅ ON":
-            t2 = threading.Thread(target=captcha,args=[int(user)])
+        captcha2 = get_bot('captcha')
+        if captcha2 == "✅ ON":
+            t2 = threading.Thread(target=captcha, args=(int(user),))
             t2.start()
         else:
             t2 = threading.Thread(target=subs, args=[int(user)])
