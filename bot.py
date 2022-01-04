@@ -682,8 +682,11 @@ def start(message):
 @bot.message_handler(content_types=['text'])
 def send_text(message):
     user = message.chat.id
-    t2 = threading.Thread(target=subs, args=[int(user)])
-    t2.start()
+    check = check1(user)
+    if check == 'Left':
+        t1 = threading.Thread(target=send_start, args=[user])
+        t1.start()
+        return
     if get_bot('Bot_status') == "❌ OFF":
         bot.send_message(user,"*❌ Bot Is OFF*",parse_mode="Markdown")
         return
