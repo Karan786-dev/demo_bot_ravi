@@ -748,7 +748,7 @@ def send_text(message):
         id = message.chat.id
         witth = get_bot('Totalw')
         total = get_bot('Totalu')
-        msg = f"*📊 Bot Live Stats 📊\n\n📤 Total Payouts : {witth} {curr}\n\n💡 Total Users : {total} Users\n\n🔎 Coded By: *[ⲘᏒ᭄кᴀʀᴀɴ✓](https://t.me/KaranYTop)"
+        msg = f"*📊 Bot Live Stats 📊\n\n📤 Total Payouts : {witth} {curr}\n\n💡 Total Users : {total} Users\n\n🔎 Made By: *[Paytm Looter](https://t.me/Paytm_Looter_Official)"
         bot.send_message(id, msg, parse_mode="Markdown", disable_web_page_preview=True)
     elif message.text == "💳 Withdraw":
         id = message.chat.id
