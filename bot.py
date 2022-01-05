@@ -266,7 +266,8 @@ def set_prefer(message):
     else:
         id = message.chat.id
         amo = message.text
-        if amo < '1':
+        amo2 = isinstance(amo,int)
+        if amo2 == False:
             haha = f'{amo}'
         else:
             haha = f'{amo}.0'
