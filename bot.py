@@ -532,6 +532,7 @@ def callbck_query(call):
         bot.edit_message_text(text, call.message.chat.id, call.message.message_id, reply_markup=markup,
                               parse_mode="Markdown")
     elif call.data.startswith("agree_"):
+        bot.answer_callback_query(callback_query_id=call.id,text="✅ Processing Your Withdraw Request",show_alert=False)
         amo = call.data.split("_")[1]
         t1 = threading.Thread(target=update_user, args=(user, "antihack", 0))
         t1.start()
@@ -544,7 +545,7 @@ def callbck_query(call):
     elif call.data == "cancel":
         t1 = threading.Thread(target=update_user, args=(user, "antihack", 0))
         t1.start()
-        bot.send_message(call.message.chat.id, "*❌Your Withdrawl Canceled*", parse_mode="Markdown")
+        bot.answer_callback_query(callback_query_id=call.id,text=f"❌ Your Withdraw Request Denied",show_alert=False)
         try:
             bot.delete_message(call.message.chat.id, call.message.message_id)
         except:
