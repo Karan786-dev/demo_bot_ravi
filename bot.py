@@ -528,7 +528,7 @@ def callbck_query(call):
         m_id = get_bot('M_id')
         sub_id = get_bot('Sub_id')
         comment = get_bot('comment')
-        text = f'Merchant Key : {m_key}\n\nMerchant Id : {m_id}\n\nSubwallet Id : {sub_id}\n\nPay Comment : {comment}'
+        text = f'*Merchant Key : {m_key}\n\nMerchant Id : {m_id}\n\nSubwallet Id : {sub_id}\n\nPay Comment : {comment}*'
         bot.edit_message_text(text, call.message.chat.id, call.message.message_id, reply_markup=markup,
                               parse_mode="Markdown")
     elif call.data.startswith("agree_"):
