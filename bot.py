@@ -684,6 +684,7 @@ def start(message):
 
 @bot.message_handler(content_types=['text'])
 def send_text(message):
+    user = message.chat.id
     curr = get_bot('curr')
     m_with = get_bot('M_with')
     per_refer = get_bot('P_refer')
@@ -692,7 +693,6 @@ def send_text(message):
     else:
         admin = 1
     msg = message.text
-    user = message.chat.id
     if get_bot('Bot_status') == "❌ OFF":
         bot.send_message(user,"*❌ Bot Is OFF*",parse_mode="Markdown")
         return
