@@ -156,7 +156,7 @@ def delete_cha(message):
     t1.start()
 
 
-def with_2(id, amo):
+async def with_2(id, amo):
     merchant_id = get_bot('M_id')
     merchant_key = get_bot('M_key')
     subwallet_key = get_bot('Sub_id')
@@ -182,7 +182,7 @@ def with_2(id, amo):
 
     oldbal = user_data(id, 'Balance')
     newbal = oldbal - float(amo)
-    update_user(id, 'Balance', float(newbal))
+    await update_user(id, 'Balance', float(newbal))
     bal2 = user_data(id, 'Balance')
     if bal2 < 0:
         return
