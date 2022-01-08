@@ -656,11 +656,6 @@ def start(message):
         bot.send_message(user,"*❌ Bot Is OFF*",parse_mode="Markdown")
         return
     msg = message.text
-    username = message.from_user.username
-    if username == None:
-        t1 = threading.Thread(target=update_user, args=(int(user), "Ban", "Ban"))
-        t1.start()
-        return
     ban = user_data(user, 'Ban')
     if ban == "Ban":
         bot.send_message(message.chat.id, "*💢 You Are Banned From Using This Bot*", parse_mode="Markdown")
@@ -689,19 +684,18 @@ def start(message):
 
 @bot.message_handler(content_types=['text'])
 def send_text(message):
-    user = message.chat.id
-    if get_bot('Bot_status') == "❌ OFF":
-        bot.send_message(user,"*❌ Bot Is OFF*",parse_mode="Markdown")
-        return
     curr = get_bot('curr')
     m_with = get_bot('M_with')
     per_refer = get_bot('P_refer')
-    user = message.chat.id
     if user in admins:
         admin = user
     else:
         admin = 1
     msg = message.text
+    user = message.chat.id
+    if get_bot('Bot_status') == "❌ OFF":
+        bot.send_message(user,"*❌ Bot Is OFF*",parse_mode="Markdown")
+        return
     wallet = user_data(user, "Wallet")
     ban = user_data(user, 'Ban')
     verify = user_data(user, 'Verify')
