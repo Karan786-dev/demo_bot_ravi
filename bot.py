@@ -563,7 +563,9 @@ def refer(user):
         t1 = threading.Thread(target=update_bot, args=('Totalu', newus))
         t1.start()
         hh = user_data(user, "referby")
-        if int(hh) == user:
+        if hh == 'None':
+            return
+        elif int(hh) == user:
             return
         elif int(hh) == 1:
             return
