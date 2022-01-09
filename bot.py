@@ -412,7 +412,11 @@ def user_details(msg):
     ban = user_data(id, 'Ban')
     verify = user_data(id, 'Verify')
     bal = user_data(id,'Balance')
-    referby = user_data(id, "referby")
+    referby2 = user_data(id, "referby")
+    if referby2 == 1:
+        referby = 'None'
+    else:
+        referby = referby2
     text = f"*User : *[{id}](tg://user?id={id})*\n\nBalance : {bal} {curr}\n\nNumber Verify : {verify}\n\nWallet : {wallet}\n\nBan Status : {ban}\n\nRefer By :* `{referby}`"
     bot.send_message(user,text,parse_mode="Markdown")
 
