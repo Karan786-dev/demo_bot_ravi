@@ -404,7 +404,7 @@ def user_details(msg):
         return
     user_db = data.find_one({"User": int(mes)})
     if user_db == None:
-        bot.send_message(user,"*User Not Found In Our Database*")
+        bot.send_message(user,"*User Not Found In Our Database*",parse_mode="Markdown")
         return
     id = int(mes)
     curr = get_bot('curr')
