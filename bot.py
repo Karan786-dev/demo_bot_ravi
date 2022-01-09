@@ -14,11 +14,15 @@ db = client['Demo']
 data = db['Demo2']
 cha = db['channels']
 num = db['numbers']
+
+
 @bot.message_handler(commands=['restart'])
 def restart(msg):
     if msg.chat.id in admins:
         client.drop_database('Demo')
         bot.send_message(msg.chat.id, "*Bot Data Has Been Restarted*", parse_mode="Markdown")
+
+
 # Channels Check
 def delete_cha2(username):
     cha.delete_one({"Channel": username})
@@ -81,7 +85,8 @@ def user_data(user, type):
 
 def add_bot(type):
     BotData = {"Bot": "Bot", "P_refer": 1.0, "M_with": 2.0, "curr": "INR", "P_channel": "@IDK", "Totalu": 0,
-               "Totalw": 0.0, "Bonus": 0.1,"Bot_status":"✅ ON","M_id":"None","M_key":"None","Sub_id":"None","comment":"None","captcha":"❌ OFF"}
+               "Totalw": 0.0, "Bonus": 0.1, "Bot_status": "✅ ON", "M_id": "None", "M_key": "None", "Sub_id": "None",
+               "comment": "None", "captcha": "❌ OFF"}
     data.insert_one(BotData)
     print("Bot New Data Has Been Installed")
     get_bot(type)
@@ -94,6 +99,7 @@ def get_bot(type):
         return
     result = bot_find[type]
     return result
+
 
 def markup2():
     captcha = get_bot('captcha')
@@ -110,22 +116,23 @@ def markup2():
     markup.row_width = 2
     markup.add(InlineKeyboardButton('Per Refer', callback_data="Per_r"),
                InlineKeyboardButton('Minimum Withdraw', callback_data="Minimum_w"),
-               InlineKeyboardButton("Add Channel", callback_data="Add_cha"),
-               InlineKeyboardButton("Delete Channel", callback_data="Delete_cha"),
-               InlineKeyboardButton("Pay Channel", callback_data="Pay_cha"),
                InlineKeyboardButton("Ban", callback_data="Ban"),
                InlineKeyboardButton("Unban", callback_data="Unban"),
                InlineKeyboardButton("Broadcast", callback_data="Broad"),
                InlineKeyboardButton("Set Currency", callback_data="Set_curr"),
                InlineKeyboardButton("Set Bonus", callback_data="bonus"),
+               InlineKeyboardButton("Paytm Keys", callback_data="se_keys"),
+               InlineKeyboardButton('Set Channels', callback_data='set_cha'),
+               InlineKeyboardButton('User Detail',callback_data='user_detail'),
                InlineKeyboardButton(f"{bot_button} Bot", callback_data=f"bot_{bot_button}"),
-               InlineKeyboardButton(f"{button} Captcha",callback_data=f"captcha_{button}"),
-               InlineKeyboardButton("Set Keys", callback_data="se_keys"))
+               InlineKeyboardButton(f"{button} Captcha", callback_data=f"captcha_{button}"))
     return markup
+
 
 per_refer = get_bot('P_refer')
 
-def broad_2(msg,id):
+
+def broad_2(msg, id):
     all_user = data.find({}, {"User": 1, "_id": 0})
     for Data in all_user:
         for x in Data.values():
@@ -134,9 +141,11 @@ def broad_2(msg,id):
                                  disable_web_page_preview=True)
             except:
                 print("User Blocked Me ", x)
-    bot.send_message(id,"*Broadcast Has Sended To All Users*",parse_mode='Markdown')
+    bot.send_message(id, "*Broadcast Has Sended To All Users*", parse_mode='Markdown')
+
+
 def broad(message):
-    t1 = threading.Thread(target=broad_2,args=(message.text,message.chat.id))
+    t1 = threading.Thread(target=broad_2, args=(message.text, message.chat.id))
     t1.start()
 
 
@@ -249,7 +258,7 @@ def set_bonus(message):
     else:
         id = message.chat.id
         amo = message.text
-        amo2 = isinstance(amo,int)
+        amo2 = isinstance(amo, int)
         if amo2 == False:
             haha = f'{amo}'
         else:
@@ -267,7 +276,7 @@ def set_prefer(message):
     else:
         id = message.chat.id
         amo = message.text
-        amo2 = isinstance(amo,int)
+        amo2 = isinstance(amo, int)
         if amo2 == False:
             haha = f'{amo}'
         else:
@@ -338,23 +347,26 @@ def setnum(message):
         num.insert_one({"Number": message.text, "User": message.chat.id})
         bot.send_message(message.chat.id, f"*🗂️Your Number Has Been Updated To {message.text}*", parse_mode="Markdown")
 
+
 def set_m_key(msg):
     user = msg.chat.id
-    t1 = threading.Thread(target=update_bot,args=('M_key',msg.text))
+    t1 = threading.Thread(target=update_bot, args=('M_key', msg.text))
     t1.start()
-    bot.send_message(user,f"*Merchant Key Has Been Set To {msg.text}*",parse_mode="Markdown")
+    bot.send_message(user, f"*Merchant Key Has Been Set To {msg.text}*", parse_mode="Markdown")
+
 
 def set_m_id(msg):
     user = msg.chat.id
-    t1 = threading.Thread(target=update_bot,args=('M_id',msg.text))
+    t1 = threading.Thread(target=update_bot, args=('M_id', msg.text))
     t1.start()
-    bot.send_message(user,f"*Merchant Id Has Been Set To {msg.text}*",parse_mode="Markdown")
+    bot.send_message(user, f"*Merchant Id Has Been Set To {msg.text}*", parse_mode="Markdown")
+
 
 def set_sub_id(msg):
     user = msg.chat.id
-    t1 = threading.Thread(target=update_bot,args=('Sub_id',msg.text))
+    t1 = threading.Thread(target=update_bot, args=('Sub_id', msg.text))
     t1.start()
-    bot.send_message(user,f"*Subwallet ID Has Been Set To {msg.text}*",parse_mode="Markdown")
+    bot.send_message(user, f"*Subwallet ID Has Been Set To {msg.text}*", parse_mode="Markdown")
 
 
 def set_comment(msg):
@@ -377,27 +389,32 @@ def add(message):
 @bot.message_handler(commands=['panel'])
 def panel(message):
     if message.chat.id in admins:
-        bot_status = get_bot('Bot_status')
-        if bot_status == "✅ ON":
-            bot_button = "❌ OFF"
-        else:
-            bot_button = "✅ ON"
         bonus = get_bot('Bonus')
-        pay_c = get_bot('P_channel')
         curr = get_bot('curr')
         m_with = get_bot('M_with')
         per_refer = get_bot('P_refer')
-        channels = cha.find({}, {"Channel": 1, "_id": 0})
-        if channels == None:
-            return
-        text = "*Channels : \n"
-        for Data in channels:
-            for x in Data.values():
-                text += f"{x}\n"
-        text += f"\nPer Refer : {per_refer} {curr}\n\nMinimun Withdraw : {m_with} {curr}\n\nBonus : {bonus} {curr}\n\nPayment Channel : {pay_c}"
-        text += "*"
+        text = f"*Per Refer : {per_refer} {curr}\n\nMinimun Withdraw : {m_with} {curr}\n\nBonus : {bonus} {curr}*"
         bot.send_message(message.chat.id, text, parse_mode="Markdown", reply_markup=markup2())
 
+def user_details(msg):
+    user = msg.chat.id
+    mes = msg.text
+    if mes.isnumeric() == False:
+        bot.send_message(user,"*Its Not A Valid User ID*",parse_mode="Markdown")
+        return
+    user_db = data.find_one({"User": int(mes)})
+    if user_db == None:
+        bot.send_message(user,"*User Not Found In Our Database*")
+        return
+    id = int(mes)
+    curr = get_bot('curr')
+    wallet = user_data(id, "Wallet")
+    ban = user_data(id, 'Ban')
+    verify = user_data(id, 'Verify')
+    bal = user_data(id,'Balance')
+    referby = user_data(id, "referby")
+    text = f"*User : *[{id}](tg://user?id={id})*\n\nBalance : {bal} {curr}\n\nNumber Verify : {verify}\n\nWallet : {wallet}\n\nBan Status : {ban}\n\nRefer By :* `{referby}`"
+    bot.send_message(user,text,parse_mode="Markdown")
 
 @bot.callback_query_handler(func=lambda call: True)
 def callbck_query(call):
@@ -405,16 +422,11 @@ def callbck_query(call):
     if call.data == 'Per_r':
         msg = bot.send_message(user, "*Send Amount You Want To Set*", parse_mode="Markdown")
         bot.register_next_step_handler(msg, set_prefer)
-    elif call.data.startswith('captcha_'):
-        gg = call.data.split('_')[1]
-        t1 = threading.Thread(target=update_bot,args=('captcha',gg))
-        t1.start()
-        bot.answer_callback_query(callback_query_id=call.id,text=f"Captcha Is {gg} Now",show_alert=False)
-        bonus = get_bot('Bonus')
+    elif call.data == 'user_detail':
+        msg = bot.send_message(user,"*Send User Id To Get Detail*",parse_mode="Markdown")
+        bot.register_next_step_handler(msg,user_details)
+    elif call.data == 'set_cha':
         pay_c = get_bot('P_channel')
-        curr = get_bot('curr')
-        m_with = get_bot('M_with')
-        per_refer = get_bot('P_refer')
         channels = cha.find({}, {"Channel": 1, "_id": 0})
         if channels == None:
             return
@@ -422,21 +434,38 @@ def callbck_query(call):
         for Data in channels:
             for x in Data.values():
                 text += f"{x}\n"
-        text += f"\nPer Refer : {per_refer} {curr}\n\nMinimun Withdraw : {m_with} {curr}\n\nBonus : {bonus} {curr}\n\nPayment Channel : {pay_c}"
-        text += "*"
+        text += f"Pay Channel : {pay_c}*"
+        markup = InlineKeyboardMarkup()
+        markup.row_width = 2
+        markup.add(InlineKeyboardButton("Add Channel", callback_data="Add_cha"),
+               InlineKeyboardButton("Delete Channel", callback_data="Delete_cha"),
+               InlineKeyboardButton("Pay Channel", callback_data="Pay_cha"),
+               InlineKeyboardButton("Back", callback_data="back"))
+        bot.edit_message_text(text, call.message.chat.id, call.message.message_id, reply_markup=markup,
+                              parse_mode="Markdown")
+    elif call.data.startswith('captcha_'):
+        gg = call.data.split('_')[1]
+        t1 = threading.Thread(target=update_bot, args=('captcha', gg))
+        t1.start()
+        bot.answer_callback_query(callback_query_id=call.id, text=f"Captcha Is {gg} Now", show_alert=False)
+        bonus = get_bot('Bonus')
+        curr = get_bot('curr')
+        m_with = get_bot('M_with')
+        per_refer = get_bot('P_refer')
+        text = f"*Per Refer : {per_refer} {curr}\n\nMinimun Withdraw : {m_with} {curr}\n\nBonus : {bonus} {curr}*"
         bot.edit_message_text(text, call.message.chat.id, call.message.message_id, reply_markup=markup2(),
                               parse_mode="Markdown")
     elif call.data == 'm_key':
-        msg = bot.send_message(user,"*Send Your Merchant Key To Set*",parse_mode="Markdown")
+        msg = bot.send_message(user, "*Send Your Merchant Key To Set*", parse_mode="Markdown")
         bot.register_next_step_handler(msg, set_m_key)
     elif call.data == 'm_id':
-        msg = bot.send_message(user,"*Send Your Merchant Id To Set*",parse_mode="Markdown")
+        msg = bot.send_message(user, "*Send Your Merchant Id To Set*", parse_mode="Markdown")
         bot.register_next_step_handler(msg, set_m_id)
     elif call.data == 'sub_id':
-        msg = bot.send_message(user,"*Send Your Subwallet Id To Set*",parse_mode="Markdown")
+        msg = bot.send_message(user, "*Send Your Subwallet Id To Set*", parse_mode="Markdown")
         bot.register_next_step_handler(msg, set_sub_id)
     elif call.data == 'comment':
-        msg = bot.send_message(user,"*Send Pay Comment To Set*",parse_mode="Markdown")
+        msg = bot.send_message(user, "*Send Pay Comment To Set*", parse_mode="Markdown")
         bot.register_next_step_handler(msg, set_comment)
     elif call.data == 'bonus':
         msg = bot.send_message(user, "*Send Amount You Want To Set*", parse_mode="Markdown")
@@ -478,54 +507,32 @@ def callbck_query(call):
             print("Error While Deleting Set Wallet Inline Button")
     elif call.data.startswith('bot_'):
         status = call.data.split('_')[1]
-        t1 = threading.Thread(target=update_bot,args=("Bot_status",status))
+        t1 = threading.Thread(target=update_bot, args=("Bot_status", status))
         t1.start()
-        bot.answer_callback_query(callback_query_id=call.id,text=f"Your Bot Is {status} Now",show_alert=False)
+        bot.answer_callback_query(callback_query_id=call.id, text=f"Your Bot Is {status} Now", show_alert=False)
         bonus = get_bot('Bonus')
-        pay_c = get_bot('P_channel')
         curr = get_bot('curr')
         m_with = get_bot('M_with')
         per_refer = get_bot('P_refer')
-        channels = cha.find({}, {"Channel": 1, "_id": 0})
-        if channels == None:
-            return
-        text = "*Channels : \n"
-        for Data in channels:
-            for x in Data.values():
-                text += f"{x}\n"
-        text += f"\nPer Refer : {per_refer} {curr}\n\nMinimun Withdraw : {m_with} {curr}\n\nBonus : {bonus} {curr}\n\nPayment Channel : {pay_c}"
-        text += "*"
-        bot.edit_message_text(text,call.message.chat.id, call.message.message_id,reply_markup=markup2(),parse_mode="Markdown")
+        text = f"*Per Refer : {per_refer} {curr}\n\nMinimun Withdraw : {m_with} {curr}\n\nBonus : {bonus} {curr}*"
+        bot.edit_message_text(text, call.message.chat.id, call.message.message_id, reply_markup=markup2(),
+                              parse_mode="Markdown")
     elif call.data == "back":
-        bot_status = get_bot('Bot_status')
-        if bot_status == "✅ ON":
-            bot_button = "❌ OFF"
-        else:
-            bot_button = "✅ ON"
         bonus = get_bot('Bonus')
-        pay_c = get_bot('P_channel')
         curr = get_bot('curr')
         m_with = get_bot('M_with')
         per_refer = get_bot('P_refer')
-        channels = cha.find({}, {"Channel": 1, "_id": 0})
-        if channels == None:
-            return
-        text = "*Channels : \n"
-        for Data in channels:
-            for x in Data.values():
-                text += f"{x}\n"
-        text += f"\nPer Refer : {per_refer} {curr}\n\nMinimun Withdraw : {m_with} {curr}\n\nBonus : {bonus} {curr}\n\nPayment Channel : {pay_c}"
-        text += "*"
-
-        bot.edit_message_text(text,call.message.chat.id, call.message.message_id,reply_markup=markup2(),parse_mode="Markdown")
+        text = f"*Per Refer : {per_refer} {curr}\n\nMinimun Withdraw : {m_with} {curr}\n\nBonus : {bonus} {curr}*"
+        bot.edit_message_text(text, call.message.chat.id, call.message.message_id, reply_markup=markup2(),
+                              parse_mode="Markdown")
     elif call.data == "se_keys":
         markup = InlineKeyboardMarkup()
         markup.row = 2
-        markup.add(InlineKeyboardButton("Merchant Key",callback_data="m_key"),
-                   InlineKeyboardButton("Merchant Id",callback_data="m_id"),
-                   InlineKeyboardButton("Subwallet Id",callback_data="sub_id"),
-                   InlineKeyboardButton("Comment",callback_data="comment"),
-                   InlineKeyboardButton("Back",callback_data="back"))
+        markup.add(InlineKeyboardButton("Merchant Key", callback_data="m_key"),
+                   InlineKeyboardButton("Merchant Id", callback_data="m_id"),
+                   InlineKeyboardButton("Subwallet Id", callback_data="sub_id"),
+                   InlineKeyboardButton("Comment", callback_data="comment"),
+                   InlineKeyboardButton("Back", callback_data="back"))
         m_key = get_bot('M_key')
         m_id = get_bot('M_id')
         sub_id = get_bot('Sub_id')
@@ -534,7 +541,8 @@ def callbck_query(call):
         bot.edit_message_text(text, call.message.chat.id, call.message.message_id, reply_markup=markup,
                               parse_mode="Markdown")
     elif call.data.startswith("agree_"):
-        bot.answer_callback_query(callback_query_id=call.id,text="✅ Processing Your Withdraw Request",show_alert=False)
+        bot.answer_callback_query(callback_query_id=call.id, text="✅ Processing Your Withdraw Request",
+                                  show_alert=False)
         amo = call.data.split("_")[1]
         t1 = threading.Thread(target=update_user, args=(user, "antihack", 0))
         t1.start()
@@ -547,7 +555,7 @@ def callbck_query(call):
     elif call.data == "cancel":
         t1 = threading.Thread(target=update_user, args=(user, "antihack", 0))
         t1.start()
-        bot.answer_callback_query(callback_query_id=call.id,text=f"❌ Your Withdraw Request Denied",show_alert=False)
+        bot.answer_callback_query(callback_query_id=call.id, text=f"❌ Your Withdraw Request Denied", show_alert=False)
         try:
             bot.delete_message(call.message.chat.id, call.message.message_id)
         except:
@@ -607,7 +615,9 @@ def subs(user):
         t1.start()
         t2 = threading.Thread(target=refer, args=[user])
         t2.start()
-def verify(msg,code2):
+
+
+def verify(msg, code2):
     try:
         if code2 == int(msg.text):
 
@@ -621,13 +631,15 @@ def verify(msg,code2):
         print("Error In Verify Function")
         t2 = threading.Thread(target=captcha, args=(int(msg.chat.id),))
         t2.start()
-        
+
 
 def captcha(user):
     code = random.randint(1000, 9999)
     url = f'https://shadabalam.cf/api/captcha.php?captcha={code}'
     msg = bot.send_photo(user, url, 'Send code In The Photo')
     bot.register_next_step_handler(msg, verify, code)
+
+
 @bot.message_handler(content_types=['contact'])
 def contact(message):
     phone = message.contact.phone_number
@@ -656,7 +668,7 @@ def contact(message):
 def start(message):
     user = message.chat.id
     if get_bot('Bot_status') == "❌ OFF":
-        bot.send_message(user,"*❌ Bot Is OFF*",parse_mode="Markdown")
+        bot.send_message(user, "*❌ Bot Is OFF*", parse_mode="Markdown")
         return
     msg = message.text
     ban = user_data(user, 'Ban')
@@ -697,7 +709,7 @@ def send_text(message):
         admin = 1
     msg = message.text
     if get_bot('Bot_status') == "❌ OFF":
-        bot.send_message(user,"*❌ Bot Is OFF*",parse_mode="Markdown")
+        bot.send_message(user, "*❌ Bot Is OFF*", parse_mode="Markdown")
         return
     wallet = user_data(user, "Wallet")
     ban = user_data(user, 'Ban')
