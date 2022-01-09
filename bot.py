@@ -166,7 +166,7 @@ def with_2(id, amo):
     m_with = get_bot('M_with')
     bal = user_data(id, 'Balance')
     wallet = user_data(id, "Wallet")
-    if amo.isdigit == False:
+    if amo.isnumeric() == False:
         bot.send_message(id, "*⛔ Only Numeric Value Allowed*", parse_mode="Markdown")
         return
     if int(amo) < m_with:
@@ -249,7 +249,8 @@ def set_bonus(message):
     else:
         id = message.chat.id
         amo = message.text
-        if amo < '1':
+        amo2 = isinstance(amo,int)
+        if amo2 == False:
             haha = f'{amo}'
         else:
             haha = f'{amo}.0'
