@@ -298,6 +298,9 @@ def set_prefer(message):
 def m_withdraw(message):
     curr = get_bot('curr')
     id = message.chat.id
+    if is_valid(message.text) == False:
+        bot.send_message(id,"*Its Not A Valid Amount*", parse_mode="Markdown")
+        return
     amo = float(message.text)
     t1 = threading.Thread(target=update_bot, args=("M_with", amo))
     t1.start()
