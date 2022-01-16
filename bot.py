@@ -316,8 +316,8 @@ def Pay_channel(message):
 def banu(message):
     id = message.chat.id
     banid = message.text
-    if banid.isdigit == True:
-        bot.send_message(id, "*Please Send A Valid ID*", parse_mode="Markdown")
+    if is_valid(message.text) == False:
+            bot.send_message(id, "*⛔ Only Numeric Value Allowed*", parse_mode="Markdown")
     else:
         t1 = threading.Thread(target=update_user, args=(int(banid), "Ban", "Ban"))
         t1.start()
@@ -327,8 +327,8 @@ def banu(message):
 def unbanu(message):
     id = message.chat.id
     banid = message.text
-    if banid.isdigit == True:
-        bot.send_message(id, "*Please Send A Valid ID*", parse_mode="Markdown")
+    if is_valid(message.text) == False:
+            bot.send_message(id, "*⛔ Only Numeric Value Allowed*", parse_mode="Markdown")
     else:
         t1 = threading.Thread(target=update_user, args=(int(banid), "Ban", "Unban"))
         t1.start()
@@ -337,7 +337,7 @@ def unbanu(message):
 
 def setnum(message):
     land = num.find_one({"Number": message.text})
-    if message.text.isdigit == False:
+    if  is_valid(message.text) == False:
         bot.send_message(message.chat.id, "*⛔Please Send A Valid Mobile Number*", parse_mode="Markdown")
     elif len(message.text) != 10:
         bot.send_message(message.chat.id, "*⛔Please Send A Valid Mobile Number*", parse_mode="Markdown")
