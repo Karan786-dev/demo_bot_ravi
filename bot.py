@@ -230,6 +230,9 @@ def with_1(message):
         if is_valid(amo) == False:
             bot.send_message(id, "*⛔ Only Numeric Value Allowed*", parse_mode="Markdown")
             return
+        if float(amo) < 0:
+            bot.send_message(id, "*⛔ Only Numeric Value Allowed*", parse_mode="Markdown")
+            return
         if float(amo) < m_with:
             bot.send_message(id, f"*⚠️ Minimum Withdrawal Is {m_with} {curr}*", parse_mode="Markdown")
             return
