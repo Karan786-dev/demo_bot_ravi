@@ -284,7 +284,7 @@ def set_prefer(message):
     else:
         id = message.chat.id
         amo = float(message.text)
-        t1 = threading.Thread(target=update_bot, args=('P_refer', float(haha)))
+        t1 = threading.Thread(target=update_bot, args=('P_refer', float(amo)))
         t1.start()
         bot.send_message(id, f"*Per Refer Has Been Set To {amo} {curr}*", parse_mode="Markdown")
 
