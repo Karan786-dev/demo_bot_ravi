@@ -10,8 +10,8 @@ from core import (bot_token, mongo_url, admins)
 
 bot = telebot.TeleBot(bot_token)
 client = pymongo.MongoClient(mongo_url)
-db = client['Demo']
-#db = client[f'{bot.get_me().username}']
+#db = client['Demo']
+db = client[f'{bot.get_me().username}']
 data = db['Demo2']
 cha = db['channels']
 num = db['numbers']
