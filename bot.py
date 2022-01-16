@@ -298,7 +298,7 @@ def set_prefer(message):
 def m_withdraw(message):
     curr = get_bot('curr')
     id = message.chat.id
-    amo = int(message.text)
+    amo = float(message.text)
     t1 = threading.Thread(target=update_bot, args=("M_with", amo))
     t1.start()
     bot.send_message(id, f"*Minimum Withdraw Has Been Set To {amo} {curr}*", parse_mode="Markdown")
