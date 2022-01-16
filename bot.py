@@ -269,22 +269,17 @@ def set_bonus(message):
         amo = float(message.text)
         t1 = threading.Thread(target=update_bot, args=('Bonus',amo))
         t1.start()
-        bot.send_message(id, f"*Bonus Has Been Updated To {haha} {curr}*", parse_mode="Markdown")
+        bot.send_message(id, f"*Bonus Has Been Updated To {amo} {curr}*", parse_mode="Markdown")
 
 
 def set_prefer(message):
     curr = get_bot('curr')
     id = message.chat.id
-    if message.text.isdigit == False:
-        bot.send_message(id, "*Please Send A Valid ID*", parse_mode="Markdown")
+    if is_valid(message.text) == False:
+            bot.send_message(id, "*⛔ Only Numeric Value Allowed*", parse_mode="Markdown")
     else:
         id = message.chat.id
-        amo = message.text
-        amo2 = isinstance(amo, int)
-        if amo2 == False:
-            haha = f'{amo}'
-        else:
-            haha = f'{amo}.0'
+        amo = float(message.text)
         t1 = threading.Thread(target=update_bot, args=('P_refer', float(haha)))
         t1.start()
         bot.send_message(id, f"*Per Refer Has Been Set To {amo} {curr}*", parse_mode="Markdown")
