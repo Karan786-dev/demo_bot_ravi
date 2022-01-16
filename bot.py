@@ -15,7 +15,12 @@ data = db['Demo2']
 cha = db['channels']
 num = db['numbers']
 
-
+def is_valid(value):
+    try:
+        float(value)
+        return True
+    except ValueError:
+        return False
 @bot.message_handler(commands=['restart'])
 def restart(msg):
     if msg.chat.id in admins:
@@ -175,17 +180,17 @@ def with_2(id, amo):
     m_with = get_bot('M_with')
     bal = user_data(id, 'Balance')
     wallet = user_data(id, "Wallet")
-    if amo.isnumeric() == False:
+    if is_valid(amo) == False:
         bot.send_message(id, "*⛔ Only Numeric Value Allowed*", parse_mode="Markdown")
         return
-    if int(amo) < m_with:
+    if float(amo) < m_with:
         bot.send_message(id, f"*⚠️ Minimum Withdrawal Is {m_with} {curr}*", parse_mode="Markdown")
         return
     if float(amo) > bal:
         bot.send_message(id, "*⛔ Entered Amount Is Greater Than Your Balance*", parse_mode="Markdown")
         return
     oldus = get_bot("Totalw")
-    newus = oldus + int(amo)
+    newus = oldus + float(amo)
     t1 = threading.Thread(target=update_bot, args=("Totalw", newus))
     t1.start()
 
@@ -222,11 +227,14 @@ def with_1(message):
         if antihack == 1:
             bot.send_message(id, "*⛔ Please Conform Your Previus Request Or Cancel*", parse_mode="Markdown")
             return
-        if amo.isnumeric() == False:
+        if is_valid(amo) == False:
             bot.send_message(id, "*⛔ Only Numeric Value Allowed*", parse_mode="Markdown")
             return
-        if int(amo) != m_with:
+        if int(amo) < m_with:
             bot.send_message(id, f"*⚠️ Minimum Withdrawal Is {m_with} {curr}*", parse_mode="Markdown")
+            return
+        if int(amo) > 10:
+            bot.send_message(id, f"*⚠️ Maximum Withdrawal Is 10 {curr}*", parse_mode="Markdown")
             return
         if float(amo) > bal:
             bot.send_message(id, "*⛔ Entered Amount Is Greater Than Your Balance*", parse_mode="Markdown")
