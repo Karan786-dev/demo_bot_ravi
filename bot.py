@@ -10,7 +10,7 @@ from core import (bot_token, mongo_url, admins)
 
 bot = telebot.TeleBot(bot_token)
 client = pymongo.MongoClient(mongo_url)
-db = client['Demo']
+db = client[f'{bot.get_me().username}']
 data = db['Demo2']
 cha = db['channels']
 num = db['numbers']
@@ -19,7 +19,7 @@ num = db['numbers']
 @bot.message_handler(commands=['restart'])
 def restart(msg):
     if msg.chat.id in admins:
-        client.drop_database('Demo')
+        client.drop_database(f'{bot.get_me().username}')
         bot.send_message(msg.chat.id, "*Bot Data Has Been Restarted*", parse_mode="Markdown")
 
 
