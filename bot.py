@@ -262,17 +262,12 @@ def menu(id):
 def set_bonus(message):
     curr = get_bot('curr')
     id = message.chat.id
-    if message.text.isdigit == False:
-        bot.send_message(id, "*Please Send A Valid ID*", parse_mode="Markdown")
+    if is_valid(message.text) == False:
+            bot.send_message(id, "*⛔ Only Numeric Value Allowed*", parse_mode="Markdown")
     else:
         id = message.chat.id
-        amo = message.text
-        amo2 = isinstance(amo, int)
-        if amo2 == False:
-            haha = f'{amo}'
-        else:
-            haha = f'{amo}.0'
-        t1 = threading.Thread(target=update_bot, args=('Bonus', float(haha)))
+        amo = float(message.text)
+        t1 = threading.Thread(target=update_bot, args=('Bonus',amo))
         t1.start()
         bot.send_message(id, f"*Bonus Has Been Updated To {haha} {curr}*", parse_mode="Markdown")
 
