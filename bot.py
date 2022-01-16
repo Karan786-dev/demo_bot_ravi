@@ -502,9 +502,9 @@ def callbck_query(call):
         bot.register_next_step_handler(msg, broad)
     elif call.data == 'set_wallet':
         if get_bot('Bot_status') == "❌ OFF":
-            bot.send_message(user, "*❌ Bot Is OFF*", parse_mode="Markdown")
+            bot.send_message(user, "*⛔️ Bot Is Currently Off*", parse_mode="Markdown")
             return
-        msg = bot.send_message(user, "*🗂️Send Your Paytm Number\n\n⚠️Notice: You Cant Change Your Wallet Again*",
+        msg = bot.send_message(user, "*🗂️Send Your Paytm Number*\n\n_⚠️Notice: It Will Used For Your Future Withdrawls_",
                                parse_mode="Markdown")
         bot.register_next_step_handler(msg, setnum)
         try:
@@ -543,7 +543,7 @@ def callbck_query(call):
         m_id = get_bot('M_id')
         sub_id = get_bot('Sub_id')
         comment = get_bot('comment')
-        text = f'*Merchant Key : {m_key}\n\nMerchant Id : {m_id}\n\nSubwallet Id : {sub_id}\n\nPay Comment : {comment}*'
+        text = f'*Merchant Key : *`{m_key}`\n\n*Merchant Id : *`{m_id}`\n\n*Subwallet Id : *`{sub_id}`\n\n*Pay Comment : {comment}*'
         bot.edit_message_text(text, call.message.chat.id, call.message.message_id, reply_markup=markup,
                               parse_mode="Markdown")
     elif call.data.startswith("agree_"):
@@ -578,6 +578,8 @@ def refer(user):
         t1 = threading.Thread(target=update_bot, args=('Totalu', newus))
         t1.start()
         hh = user_data(user, "referby")
+        if is_valid(hh) == False:
+            return
         if hh == 'None':
             return
         elif int(hh) == user:
@@ -674,7 +676,7 @@ def contact(message):
 def start(message):
     user = message.chat.id
     if get_bot('Bot_status') == "❌ OFF":
-        bot.send_message(user, "*❌ Bot Is OFF*", parse_mode="Markdown")
+        bot.send_message(user, "*⛔️ Bot Is Currently Off*", parse_mode="Markdown")
         return
     msg = message.text
     ban = user_data(user, 'Ban')
