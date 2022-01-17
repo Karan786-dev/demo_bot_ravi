@@ -153,7 +153,7 @@ def broad_2(msg, id):
                 print("User Blocked Me ", x)
     text = f"*👍 Broadcast Sended To All Users\n\n✅ Success : {success} *"
     if fail != 0:
-       text += "\n*🔻Fail : {fail} (Becuz Users Blocked Bot)*"
+       text += f"\n*🔻Fail : {fail} (Becuz Users Blocked Bot)*"
     bot.send_message(id,text, parse_mode='Markdown')
 
 
