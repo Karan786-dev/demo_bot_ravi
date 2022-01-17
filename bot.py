@@ -140,14 +140,21 @@ per_refer = get_bot('P_refer')
 
 def broad_2(msg, id):
     all_user = data.find({}, {"User": 1, "_id": 0})
+    success = 0
+    fail = 0
     for Data in all_user:
         for x in Data.values():
             try:
                 bot.send_message(x, f"*📣 Broadcast*\n\n{msg}", parse_mode="Markdown",
                                  disable_web_page_preview=True)
+                success += 1
             except:
+                fail += 1
                 print("User Blocked Me ", x)
-    bot.send_message(id, "*Broadcast Has Sended To All Users*", parse_mode='Markdown')
+    text = f"*👍 Broadcast Sended To All Users\n\n✅ Success : {success} *"
+    if fail != 0:
+       text += "\n*🔻Fail : {fail} (Becuz Users Blocked Bot)*"
+    bot.send_message(id,text, parse_mode='Markdown')
 
 
 def broad(message):
