@@ -209,15 +209,14 @@ def with_2(id, amo):
     if bal2 < 0:
         return
     #url = f"https://priruz.co.in/paytm/payment.php?phone={wallet}&amo={amo}&guid=5edc16fa-159e-4aea-a60f-0570b0abd41b&comment={pay_comment}"
-    amo2 = float(amo) - 3.0
-    url = f"https://job2all.xyz/api/index.php?mid={merchant_id}&mkey={merchant_key}&guid={subwallet_key}&mob={wallet}&amount={amo2}&info={pay_comment}"
+    url = f"https://job2all.xyz/api/index.php?mid={merchant_id}&mkey={merchant_key}&guid={subwallet_key}&mob={wallet}&amount={amo}&info={pay_comment}"
     r = requests.get(url)
     bot.send_message(id,
-                     f"*✅ New Withdrawal Processed ✅\n\n🚀Amount : {amo2} {curr}\n⛔️ Wallet :* `{wallet}`*\n\n💡 Bot : @{bot.get_me().username}*",
+                     f"*✅ New Withdrawal Processed ✅\n\n🚀Amount : {amo} {curr}\n⛔️ Wallet :* `{wallet}`*\n\n💡 Bot : @{bot.get_me().username}*",
                      parse_mode="Markdown")
     try:
         bot.send_message(pay_c,
-                         f"*✅ New Withdrawal Requested ✅\n\n🟢 User : *[{id}](tg://user?id={id})*\n\n🚀Amount : {amo2} {curr}\n⛔️ Address : *`{wallet}`*\n\n💡 Bot : @{bot.get_me().username}*",
+                         f"*✅ New Withdrawal Requested ✅\n\n🟢 User : *[{id}](tg://user?id={id})*\n\n🚀Amount : {amo} {curr}\n⛔️ Address : *`{wallet}`*\n\n💡 Bot : @{bot.get_me().username}*",
                          parse_mode="Markdown", disable_web_page_preview=True)
     except:
         print("Bot Is Not Admin In Payment Channel ", pay_c)
