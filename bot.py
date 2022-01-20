@@ -728,7 +728,7 @@ def send_text(message):
         admin = 1
     msg = message.text
     if get_bot('Bot_status') == "❌ OFF":
-        bot.send_message(user, "*❌ Bot Is OFF*", parse_mode="Markdown")
+        bot.send_message(user, "*⛔ Bot Is Currently Off*", parse_mode="Markdown")
         return
     wallet = user_data(user, "Wallet")
     ban = user_data(user, 'Ban')
