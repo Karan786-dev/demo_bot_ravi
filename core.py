@@ -1,5 +1,5 @@
 #Bot Token From @BotFather
-bot_token = "5069668674:AAFqXlsRzEzh3Gv8e4ajNybab3bVGDtqnqk"
+bot_token = "5164749294:AAHavo_A3FJ-dlPr35ZIQXlw60gjIMOETFg"
 
 #Admins Telegram ID
 admins = [1468386562,1821521027]
