@@ -1,8 +1,8 @@
 #Bot Token From @BotFather
-bot_token = "5298781763:AAFyi2f8Qc_WYjcRHS_2ozCCoetqa4jhhEQ"
+bot_token = "5140841356:AAGaNzkrwqYjLfLvPyxAb6laqYz6VSe9DhQ"
 
 #Admins Telegram ID
-admins = [1468386562,1720922601]
+admins = [1468386562]
 
 #MongoDb Url For Databse
 mongo_url = "mongodb+srv://otto:otto@cluster0.ehnab.mongodb.net/myFirstDatabase?retryWrites=true&w=majority"
