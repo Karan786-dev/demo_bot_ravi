@@ -775,9 +775,10 @@ def send_text(message):
         bot.send_message(user, text, parse_mode="Markdown", reply_markup=markup)
     elif message.text == "📊 Statistics":
         id = message.chat.id
-        witth = get_bot('Totalw')
+        witth2 = get_bot('Totalw')
+        witth = "{:.3f}".format(witth)
         total = get_bot('Totalu')
-        msg = f"*📊 Bot Live Stats 📊\n\n📤 Total Payouts : {"{:.3f}".format(witth)} {curr}\n\n💡 Total Users : {total} Users\n\n🔎 Made By: *[🔥Piro Karan](https://t.me/karan_coder)"
+        msg = f"*📊 Bot Live Stats 📊\n\n📤 Total Payouts : {witth} {curr}\n\n💡 Total Users : {total} Users\n\n🔎 Made By: *[🔥Piro Karan](https://t.me/karan_coder)"
         bot.send_message(id, msg, parse_mode="Markdown", disable_web_page_preview=True)
     elif message.text == "💳 Withdraw":
         id = message.chat.id
