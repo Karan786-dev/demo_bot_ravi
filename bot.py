@@ -776,7 +776,7 @@ def send_text(message):
     elif message.text == "📊 Statistics":
         id = message.chat.id
         witth2 = get_bot('Totalw')
-        witth = "{:.3f}".format(witth)
+        witth = "{:.3f}".format(witth2)
         total = get_bot('Totalu')
         msg = f"*📊 Bot Live Stats 📊\n\n📤 Total Payouts : {witth} {curr}\n\n💡 Total Users : {total} Users\n\n🔎 Made By: *[🔥Piro Karan](https://t.me/karan_coder)"
         bot.send_message(id, msg, parse_mode="Markdown", disable_web_page_preview=True)
