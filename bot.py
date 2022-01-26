@@ -759,7 +759,7 @@ def send_text(message):
 
         t1.start()
     elif message.text == "💰 Balance":
-        balance = user_data(user, 'Balance')
+        balance = "{:.3f}".format(user_data(user, 'Balance'))
         wallet = user_data(user, 'Wallet')
         msg = f'*🙌🏻 User = {message.from_user.first_name}\n\n💰 Balance = {balance} {curr}\n\n🪢 Invite To Earn More*'
         bot.send_message(message.chat.id, msg, parse_mode="Markdown")
