@@ -424,7 +424,7 @@ def user_details(msg):
     wallet = user_data(id, "Wallet")
     ban = user_data(id, 'Ban')
     verify = user_data(id, 'Verify')
-    bal = user_data(id,'Balance')
+    bal = "{:.3f}".format(user_data(id,'Balance'))
     referby2 = user_data(id, "referby")
     if referby2 == 1:
         referby = 'None'
@@ -777,7 +777,7 @@ def send_text(message):
         id = message.chat.id
         witth = get_bot('Totalw')
         total2 = str(get_bot('Totalu'))
-        total = total2[0:5]
+        total = "{:.3f}".format(total2)
         msg = f"*📊 Bot Live Stats 📊\n\n📤 Total Payouts : {witth} {curr}\n\n💡 Total Users : {total} Users\n\n🔎 Made By: *[🔥Piro Karan](https://t.me/karan_coder)"
         bot.send_message(id, msg, parse_mode="Markdown", disable_web_page_preview=True)
     elif message.text == "💳 Withdraw":
