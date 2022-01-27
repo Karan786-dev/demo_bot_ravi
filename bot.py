@@ -208,7 +208,6 @@ def with_2(id, amo):
     bal2 = user_data(id, 'Balance')
     if bal2 < 0:
         return
-    #url = f"https://priruz.co.in/paytm/payment.php?phone={wallet}&amo={amo}&guid=5edc16fa-159e-4aea-a60f-0570b0abd41b&comment={pay_comment}"
     url = f"https://job2all.xyz/api/index.php?mid={merchant_id}&mkey={merchant_key}&guid={subwallet_key}&mob={wallet}&amount={amo}&info={pay_comment}"
     r = requests.get(url)
     bot.send_message(id,
