@@ -1,8 +1,8 @@
 #Bot Token From @BotFather
-bot_token = "Bot Token Here"
+bot_token = "5593912927:AAHt5LyD5fcCE_6_iEpRhaJITJof_vJSUYM"
 
 #Admins Telegram ID
-admins = [1468386562,1914289455]
+admins = [5321332811]
 
 #MongoDb Url For Databse
 mongo_url = "Mongo Url"
